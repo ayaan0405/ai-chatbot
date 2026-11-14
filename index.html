@@ -15,7 +15,7 @@
   <style>
     /* =========================================================
        Student Project Stylesheet - Dark Mode
-       Clean, modern, and easy to read
+       Clean, modern, and student-focused
        ========================================================= */
     * {
       box-sizing: border-box;
@@ -29,7 +29,7 @@
       color: #e2e8f0;
       display: flex;
       justify-content: center;
-      padding: 20px;
+      padding: 16px;
       min-height: 100vh;
     }
 
@@ -37,10 +37,10 @@
     .app-card {
       background: #131b2e;
       width: 100%;
-      max-width: 800px;
-      height: 90vh;
+      max-width: 860px;
+      height: 92vh;
       border-radius: 16px;
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.45);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
       display: flex;
       flex-direction: column;
       overflow: hidden;
@@ -52,7 +52,7 @@
       background: #1a243a;
       border-bottom: 1px solid #23314d;
       color: #f8fafc;
-      padding: 16px 20px;
+      padding: 14px 20px;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -73,22 +73,59 @@
       margin-top: 2px;
     }
 
+    /* Navigation Tabs */
+    .nav-tabs {
+      display: flex;
+      background: #0f172a;
+      border-bottom: 1px solid #1e293b;
+      padding: 0 12px;
+      gap: 4px;
+      overflow-x: auto;
+    }
+
+    .nav-btn {
+      background: none;
+      border: none;
+      color: #94a3b8;
+      padding: 10px 14px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+      transition: all 0.2s;
+    }
+
+    .nav-btn:hover {
+      color: #f1f5f9;
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    .nav-btn.active {
+      color: #3b82f6;
+      border-bottom-color: #3b82f6;
+      font-weight: 600;
+    }
+
     /* Attached Notes / Document Bar */
     .file-bar {
-      background: #0f172a;
-      padding: 10px 16px;
+      background: #0d1424;
+      padding: 8px 16px;
       border-bottom: 1px solid #1e293b;
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 10px;
-      font-size: 0.85rem;
+      font-size: 0.82rem;
     }
 
     .file-input-label {
       background: #1e293b;
       color: #cbd5e1;
-      padding: 6px 12px;
+      padding: 5px 12px;
       border-radius: 6px;
       cursor: pointer;
       font-weight: 500;
@@ -97,6 +134,7 @@
       gap: 5px;
       border: 1px solid #334155;
       transition: all 0.2s;
+      font-size: 0.82rem;
     }
 
     .file-input-label:hover {
@@ -127,35 +165,109 @@
       text-decoration: underline;
     }
 
-    /* Chat Messages Window */
+    /* Tab Content Panels */
+    .tab-panel {
+      flex: 1;
+      overflow-y: auto;
+      display: none;
+      flex-direction: column;
+    }
+
+    .tab-panel.active {
+      display: flex;
+    }
+
+    /* =========================================================
+       1. Chat & Doubts Tab Styles
+       ========================================================= */
     .chat-window {
       flex: 1;
-      padding: 20px;
+      padding: 16px 20px;
       overflow-y: auto;
       background: #0b1120;
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: 14px;
     }
 
-    /* Welcome message banner */
+    /* Drag & Drop Zone Box inside Welcome area */
     .welcome-box {
       background: #131d33;
-      border: 1px dashed #2563eb;
+      border: 1px solid #233354;
       border-radius: 12px;
       padding: 16px;
       text-align: center;
-      font-size: 0.9rem;
       color: #93c5fd;
-      margin-bottom: 10px;
-      line-height: 1.6;
+      line-height: 1.5;
     }
 
-    /* Chat Bubble Styles */
+    .drop-zone {
+      margin-top: 12px;
+      border: 2px dashed #3b82f6;
+      background: #0f182c;
+      border-radius: 10px;
+      padding: 18px 12px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      color: #93c5fd;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .drop-zone:hover, .drop-zone.dragover {
+      background: #1a2a4a;
+      border-color: #60a5fa;
+      transform: scale(1.01);
+    }
+
+    .drop-zone-icon {
+      font-size: 1.8rem;
+    }
+
+    .drop-zone-title {
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: #ffffff;
+    }
+
+    .drop-zone-hint {
+      font-size: 0.78rem;
+      color: #94a3b8;
+    }
+
+    /* Quick Doubt Prompt Chips */
+    .doubt-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      justify-content: center;
+      margin-top: 12px;
+    }
+
+    .chip-btn {
+      background: #1e293b;
+      color: #cbd5e1;
+      border: 1px solid #334155;
+      padding: 5px 10px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .chip-btn:hover {
+      background: #2563eb;
+      color: white;
+      border-color: #2563eb;
+    }
+
+    /* Chat Bubbles */
     .message {
       display: flex;
       flex-direction: column;
-      max-width: 80%;
+      max-width: 82%;
     }
 
     .message.user {
@@ -197,16 +309,9 @@
     }
 
     /* Markdown inside bot bubble */
-    .bubble p {
-      margin-bottom: 8px;
-    }
-    .bubble p:last-child {
-      margin-bottom: 0;
-    }
-    .bubble ul, .bubble ol {
-      margin-left: 20px;
-      margin-bottom: 8px;
-    }
+    .bubble p { margin-bottom: 8px; }
+    .bubble p:last-child { margin-bottom: 0; }
+    .bubble ul, .bubble ol { margin-left: 20px; margin-bottom: 8px; }
     .bubble code {
       background: #233354;
       color: #bfdbfe;
@@ -224,26 +329,22 @@
       margin: 8px 0;
       border: 1px solid #1e293b;
     }
-    .bubble pre code {
-      background: transparent;
-      color: inherit;
-    }
+    .bubble pre code { background: transparent; color: inherit; }
 
-    /* Typing indicator */
     .typing {
       font-style: italic;
       color: #94a3b8;
       font-size: 0.85rem;
     }
 
-    /* Bottom Input Bar */
+    /* Chat Input Bar */
     .input-area {
-      padding: 14px 20px;
+      padding: 12px 20px;
       background: #131b2e;
       border-top: 1px solid #1e293b;
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 6px;
     }
 
     .input-row {
@@ -253,7 +354,7 @@
 
     #user-input {
       flex: 1;
-      padding: 12px 14px;
+      padding: 10px 14px;
       background: #0b1120;
       color: #f8fafc;
       border: 1px solid #23314d;
@@ -263,35 +364,23 @@
       transition: border-color 0.2s;
     }
 
-    #user-input::placeholder {
-      color: #64748b;
-    }
-
-    #user-input:focus {
-      border-color: #3b82f6;
-    }
+    #user-input::placeholder { color: #64748b; }
+    #user-input:focus { border-color: #3b82f6; }
 
     #send-btn {
       background: #2563eb;
       color: white;
       border: none;
-      padding: 0 20px;
+      padding: 0 18px;
       border-radius: 8px;
-      font-size: 0.95rem;
+      font-size: 0.92rem;
       font-weight: 600;
       cursor: pointer;
       transition: background 0.2s;
     }
 
-    #send-btn:hover {
-      background: #1d4ed8;
-    }
-
-    #send-btn:disabled {
-      background: #334155;
-      color: #64748b;
-      cursor: not-allowed;
-    }
+    #send-btn:hover { background: #1d4ed8; }
+    #send-btn:disabled { background: #334155; color: #64748b; cursor: not-allowed; }
 
     .input-footer {
       display: flex;
@@ -301,14 +390,191 @@
       color: #64748b;
     }
 
-    .clear-link {
-      color: #f87171;
+    .clear-link { color: #f87171; cursor: pointer; text-decoration: underline; }
+    .clear-link:hover { color: #ef4444; }
+
+    /* =========================================================
+       2. Common Form & Card Styles for Tools
+       ========================================================= */
+    .tool-container {
+      padding: 20px;
+      overflow-y: auto;
+      background: #0b1120;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .card {
+      background: #131d33;
+      border: 1px solid #233354;
+      border-radius: 12px;
+      padding: 18px;
+    }
+
+    .card-title {
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: #ffffff;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .card-desc {
+      font-size: 0.83rem;
+      color: #94a3b8;
+      margin-bottom: 14px;
+      line-height: 1.4;
+    }
+
+    .btn-primary {
+      background: #2563eb;
+      color: white;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 600;
       cursor: pointer;
-      text-decoration: underline;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: background 0.2s;
     }
-    .clear-link:hover {
-      color: #ef4444;
+
+    .btn-primary:hover { background: #1d4ed8; }
+    .btn-primary:disabled { background: #334155; color: #64748b; cursor: not-allowed; }
+
+    .btn-secondary {
+      background: #1e293b;
+      color: #cbd5e1;
+      border: 1px solid #334155;
+      padding: 8px 14px;
+      border-radius: 6px;
+      font-size: 0.82rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
     }
+
+    .btn-secondary:hover { background: #27354f; color: white; }
+
+    .result-display {
+      background: #090e1a;
+      border: 1px solid #1e293b;
+      border-radius: 10px;
+      padding: 16px;
+      color: #e2e8f0;
+      font-size: 0.9rem;
+      line-height: 1.6;
+      margin-top: 14px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 12px;
+    }
+
+    .form-label {
+      font-size: 0.82rem;
+      color: #cbd5e1;
+      font-weight: 500;
+    }
+
+    .form-input, .form-select {
+      background: #0b1120;
+      border: 1px solid #23314d;
+      border-radius: 8px;
+      padding: 9px 12px;
+      color: #f8fafc;
+      font-size: 0.9rem;
+      outline: none;
+    }
+    .form-input:focus, .form-select:focus { border-color: #3b82f6; }
+
+    /* =========================================================
+       3. Progress Tracker Styles
+       ========================================================= */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .stat-box {
+      background: #0f172a;
+      border: 1px solid #1e293b;
+      border-radius: 10px;
+      padding: 14px;
+      text-align: center;
+    }
+
+    .stat-number {
+      font-size: 1.6rem;
+      font-weight: bold;
+      color: #3b82f6;
+    }
+
+    .stat-label {
+      font-size: 0.75rem;
+      color: #94a3b8;
+      margin-top: 2px;
+    }
+
+    .weak-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 12px;
+      background: #0f172a;
+      border: 1px solid #1e293b;
+      border-radius: 8px;
+      margin-bottom: 6px;
+      font-size: 0.85rem;
+    }
+
+    .weak-item.mastered {
+      opacity: 0.6;
+      text-decoration: line-through;
+    }
+
+    /* MCQ Interactive Quiz in Tracker */
+    .quiz-question {
+      background: #0f172a;
+      border: 1px solid #1e293b;
+      border-radius: 10px;
+      padding: 14px;
+      margin-bottom: 12px;
+    }
+    .quiz-q-title {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #f8fafc;
+      margin-bottom: 10px;
+    }
+    .quiz-opt {
+      display: block;
+      width: 100%;
+      text-align: left;
+      padding: 8px 12px;
+      background: #131d33;
+      border: 1px solid #233354;
+      border-radius: 6px;
+      color: #cbd5e1;
+      font-size: 0.85rem;
+      margin-bottom: 6px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .quiz-opt:hover { background: #1e2c4a; border-color: #3b82f6; }
+    .quiz-opt.correct { background: #064e3b; border-color: #059669; color: #a7f3d0; font-weight: 600; }
+    .quiz-opt.incorrect { background: #7f1d1d; border-color: #dc2626; color: #fecaca; }
   </style>
 </head>
 <body>
@@ -318,86 +584,367 @@
     <header>
       <div>
         <h1>🎓 My AI Chatbot</h1>
-        <div class="subtitle">CS Project • Powered by Google Gemini API</div>
+        <div class="subtitle">CS Project</div>
       </div>
     </header>
 
-    <!-- File Upload / Attached Homework Bar -->
+    <!-- Navigation Tabs -->
+    <nav class="nav-tabs">
+      <button class="nav-btn active" onclick="switchTab('chat')">💬 Chat & Doubts</button>
+      <button class="nav-btn" onclick="switchTab('summary')">📝 Smart Summary</button>
+      <button class="nav-btn" onclick="switchTab('planner')">📅 Study Planner</button>
+      <button class="nav-btn" onclick="switchTab('progress')">📊 Progress Tracker</button>
+    </nav>
+
+    <!-- Attached Notes / Document Bar (visible across all tabs) -->
     <div class="file-bar">
       <div style="display: flex; align-items: center; gap: 8px;">
         <label class="file-input-label">
-          📎 Attach PDF or Notes
+          📎 Attach Notes / PDF
           <input type="file" id="file-input" style="display: none;" accept=".pdf,.txt,.md,.py,.js" onchange="handleFile(event)">
         </label>
         <span id="file-status" class="file-name" style="display: none;"></span>
         <button id="remove-file-btn" class="remove-file-btn" style="display: none;" onclick="removeFile()">✕ Remove</button>
       </div>
+      <span style="font-size: 0.75rem; color: #64748b;" id="active-notes-indicator">No document loaded</span>
     </div>
 
-    <!-- Messages Container -->
-    <div class="chat-window" id="chat-window">
-      <div class="welcome-box" id="welcome-box">
-        👋 <b>Hi there! I'm your AI Study Assistant.</b><br>
-        Ask me homework questions, help writing essays or code, or upload a <b>PDF / notes</b> to ask questions about it!
+    <!-- =========================================================
+         TAB 1: Chat & Doubts (Step-by-step doubt clearing)
+         ========================================================= -->
+    <div class="tab-panel active" id="tab-chat">
+      <div class="chat-window" id="chat-window">
+        
+        <!-- Welcome Box with Drag & Drop Feature -->
+        <div class="welcome-box" id="welcome-box">
+          <div style="font-weight: 600; font-size: 1.05rem; color: #ffffff; margin-bottom: 4px;">
+            👋 Hi there! I'm your AI Study Assistant.
+          </div>
+          <div style="font-size: 0.85rem; color: #94a3b8;">
+            Ask me to explain any difficult concept step-by-step, clarify doubts, or upload notes/PDF below!
+          </div>
+
+          <!-- Drag and Drop Dropzone -->
+          <div 
+            class="drop-zone" 
+            id="drop-zone"
+            onclick="document.getElementById('file-input').click()"
+            ondragover="handleDragOver(event)"
+            ondragleave="handleDragLeave(event)"
+            ondrop="handleDrop(event)"
+          >
+            <div class="drop-zone-icon">📥</div>
+            <div class="drop-zone-title" id="drop-zone-title">Drag & drop your PDF or notes here</div>
+            <div class="drop-zone-hint">Supports PDF, TXT, MD, Python, JS files</div>
+          </div>
+
+          <!-- Quick Doubt Clarification Chips -->
+          <div class="doubt-chips">
+            <button class="chip-btn" onclick="sendQuickPrompt('Explain this concept step-by-step with a simple real-world analogy.')">
+              💡 Explain step-by-step
+            </button>
+            <button class="chip-btn" onclick="sendQuickPrompt('Break down the most difficult formula or rule in my notes.')">
+              📐 Break down difficult formula
+            </button>
+            <button class="chip-btn" onclick="sendQuickPrompt('Give me a simple practice example to test if I understand this.')">
+              ✍️ Practice example
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Input Box -->
+      <div class="input-area">
+        <div class="input-row">
+          <input 
+            type="text" 
+            id="user-input" 
+            placeholder="Ask a doubt or question... (Press Enter to send)" 
+            onkeydown="if(event.key === 'Enter') sendMessage()"
+          >
+          <button id="send-btn" onclick="sendMessage()">Send 🚀</button>
+        </div>
+        <div class="input-footer">
+          <span>Step-by-step doubt clearing active</span>
+          <span class="clear-link" onclick="clearChat()">Clear Chat</span>
+        </div>
       </div>
     </div>
 
-    <!-- Input Box -->
-    <div class="input-area">
-      <div class="input-row">
-        <input 
-          type="text" 
-          id="user-input" 
-          placeholder="Type your question here and press Enter..." 
-          onkeydown="if(event.key === 'Enter') sendMessage()"
-        >
-        <button id="send-btn" onclick="sendMessage()">Send 🚀</button>
-      </div>
-      <div class="input-footer">
-        <span>Remembers conversation context</span>
-        <span class="clear-link" onclick="clearChat()">Clear Chat History</span>
+    <!-- =========================================================
+         TAB 2: Smart Summary (1-Click Summary from PDF)
+         ========================================================= -->
+    <div class="tab-panel" id="tab-summary">
+      <div class="tool-container">
+        <div class="card">
+          <div class="card-title">📝 Smart Note Summarizer</div>
+          <div class="card-desc">
+            Convert lengthy textbook chapters or lecture notes into structured summaries, key formulas, definitions, and high-yield takeaways.
+          </div>
+
+          <div id="summary-file-notice" style="margin-bottom: 14px; font-size: 0.85rem; color: #94a3b8;">
+            No document attached yet. You can attach a PDF above or paste notes below.
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Or Paste Notes Text directly (Optional):</label>
+            <textarea id="summary-custom-text" class="form-input" rows="3" placeholder="Paste lecture notes or chapter text here if you don't have a PDF file..."></textarea>
+          </div>
+
+          <button id="summary-btn" class="btn-primary" onclick="generateSmartSummary()">
+            ✨ Generate 1-Click Summary
+          </button>
+        </div>
+
+        <div id="summary-result-card" class="card" style="display: none;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+            <div class="card-title" style="margin-bottom: 0;">📋 Generated Summary</div>
+            <button class="btn-secondary" onclick="copySummaryText()">Copy Summary</button>
+          </div>
+          <div id="summary-output" class="result-display">
+            Generating summary...
+          </div>
+        </div>
       </div>
     </div>
+
+    <!-- =========================================================
+         TAB 3: Study Planner (Exam Schedule Generator)
+         ========================================================= -->
+    <div class="tab-panel" id="tab-planner">
+      <div class="tool-container">
+        <div class="card">
+          <div class="card-title">📅 Exam Study Planner</div>
+          <div class="card-desc">
+            Generate an organized day-by-day study schedule with spaced repetition, practice milestones, and break periods tailored for your exams.
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+            <div class="form-group">
+              <label class="form-label">Subject / Exam Topic:</label>
+              <input type="text" id="plan-subject" class="form-input" placeholder="e.g. Physics Mechanics or Calculus Midterm">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Days Left Until Exam:</label>
+              <select id="plan-days" class="form-select">
+                <option value="3 days">3 Days (Sprint)</option>
+                <option value="5 days">5 Days</option>
+                <option value="7 days" selected>7 Days (1 Week)</option>
+                <option value="14 days">14 Days (2 Weeks)</option>
+                <option value="30 days">30 Days (1 Month)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Available Study Time Per Day:</label>
+            <select id="plan-hours" class="form-select">
+              <option value="1 hour">1 hour / day</option>
+              <option value="2 hours" selected>2 hours / day</option>
+              <option value="3-4 hours">3 to 4 hours / day</option>
+              <option value="5+ hours">5+ hours / day (Intensive)</option>
+            </select>
+          </div>
+
+          <button id="planner-btn" class="btn-primary" onclick="generateStudyPlan()">
+            📅 Create My Study Schedule
+          </button>
+        </div>
+
+        <div id="planner-result-card" class="card" style="display: none;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+            <div class="card-title" style="margin-bottom: 0;">🗓️ Your Personalized Schedule</div>
+            <button class="btn-secondary" onclick="savePlanLocally()">Save Schedule</button>
+          </div>
+          <div id="planner-output" class="result-display">
+            Generating schedule...
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- =========================================================
+         TAB 4: Progress Tracker & Quiz Scoring
+         ========================================================= -->
+    <div class="tab-panel" id="tab-progress">
+      <div class="tool-container">
+        
+        <!-- Stats Row -->
+        <div class="stats-grid">
+          <div class="stat-box">
+            <div class="stat-number" id="stat-doubts">0</div>
+            <div class="stat-label">Doubts Clarified</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-number" id="stat-docs">0</div>
+            <div class="stat-label">Notes/PDFs Studied</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-number" id="stat-quizzes">0</div>
+            <div class="stat-label">Quizzes Completed</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-number" id="stat-weak-count">0</div>
+            <div class="stat-label">Weak Areas Logged</div>
+          </div>
+        </div>
+
+        <!-- Weak Areas Section -->
+        <div class="card">
+          <div class="card-title">⚠️ Weak Areas & Concepts to Review</div>
+          <div class="card-desc">Keep track of challenging topics. Check them off once you master them.</div>
+          
+          <div style="display: flex; gap: 8px; margin-bottom: 12px;">
+            <input type="text" id="new-weak-input" class="form-input" placeholder="e.g. Integration by parts, Photosynthesis light reactions..." style="flex: 1;">
+            <button class="btn-secondary" onclick="addWeakArea()">+ Add Topic</button>
+          </div>
+
+          <div id="weak-areas-list">
+            <div style="font-size: 0.82rem; color: #64748b; font-style: italic;">No weak areas logged yet. Add difficult topics above!</div>
+          </div>
+        </div>
+
+        <!-- Practice Quiz Section to log scores -->
+        <div class="card">
+          <div class="card-title">🎯 Quick Practice Quiz & Score Test</div>
+          <div class="card-desc">Generate a 3-question MCQ quiz from your notes or topic to test your knowledge and record your score.</div>
+
+          <button id="quiz-btn" class="btn-primary" onclick="generatePracticeQuiz()">
+            ⚡ Generate 3-Question Practice Quiz
+          </button>
+
+          <div id="quiz-container" style="margin-top: 14px; display: none;"></div>
+          <div id="quiz-score-banner" style="margin-top: 10px; display: none; padding: 10px; border-radius: 8px; background: #1e3a8a; color: #bfdbfe; font-weight: 600; text-align: center;"></div>
+        </div>
+
+      </div>
+    </div>
+
   </div>
 
   <script>
     // =========================================================================
     // Student Chatbot Project Script
-    // Clean and simple JavaScript for Gemini API
+    // Clean, modern, with Doubt Clarification, Summary, Planner & Tracker
     // =========================================================================
 
-    // 1. My API Key (loaded securely from config.js or localStorage)
+    // 1. API Configuration
     let API_KEY = (window.GEMINI_API_KEY && window.GEMINI_API_KEY !== "YOUR_GEMINI_API_KEY_HERE") 
                   ? window.GEMINI_API_KEY 
                   : (localStorage.getItem("gemini_api_key") || "");
     const MODEL_NAME = "gemini-3.8-flash";
 
-    // 2. Chat history array for conversational memory
+    // 2. Chat history for conversational memory
     let chatHistory = [];
 
     // 3. Document text if a file is uploaded
     let uploadedDocumentText = "";
     let uploadedDocumentName = "";
 
-    // Set up PDF.js worker
+    // 4. Progress Tracker Data (saved in browser localStorage)
+    let progressData = JSON.parse(localStorage.getItem('student_tracker_data') || JSON.stringify({
+      doubtsAsked: 0,
+      docsAnalyzed: 0,
+      quizzesCompleted: 0,
+      weakAreas: [
+        { id: 'wa_1', text: 'Step-by-step problem derivations', mastered: false }
+      ],
+      savedPlan: ""
+    }));
+
+    // Initialize PDF.js
     if (window.pdfjsLib) {
       pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
     }
 
-    // 4. Handle file upload (PDF or Text)
+    // On Load
+    window.addEventListener('DOMContentLoaded', () => {
+      renderProgressStats();
+      renderWeakAreas();
+      setupGlobalDragAndDrop();
+
+      // Restore saved study plan if exists
+      if (progressData.savedPlan) {
+        document.getElementById('planner-result-card').style.display = 'block';
+        document.getElementById('planner-output').innerHTML = marked.parse(progressData.savedPlan);
+      }
+    });
+
+    // =========================================================================
+    // TAB SWITCHING
+    // =========================================================================
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+
+      const targetPanel = document.getElementById(`tab-${tabId}`);
+      if (targetPanel) targetPanel.classList.add('active');
+
+      const activeBtn = Array.from(document.querySelectorAll('.nav-btn')).find(b => b.getAttribute('onclick')?.includes(tabId));
+      if (activeBtn) activeBtn.classList.add('active');
+    }
+
+    // =========================================================================
+    // FILE HANDLING & DRAG AND DROP
+    // =========================================================================
+    function setupGlobalDragAndDrop() {
+      ['dragenter', 'dragover'].forEach(name => {
+        window.addEventListener(name, (e) => {
+          e.preventDefault();
+          const dz = document.getElementById('drop-zone');
+          if (dz) dz.classList.add('dragover');
+        });
+      });
+
+      ['dragleave', 'drop'].forEach(name => {
+        window.addEventListener(name, (e) => {
+          e.preventDefault();
+          const dz = document.getElementById('drop-zone');
+          if (dz) dz.classList.remove('dragover');
+        });
+      });
+    }
+
+    function handleDragOver(e) {
+      e.preventDefault();
+      document.getElementById('drop-zone').classList.add('dragover');
+    }
+
+    function handleDragLeave(e) {
+      e.preventDefault();
+      document.getElementById('drop-zone').classList.remove('dragover');
+    }
+
+    async function handleDrop(e) {
+      e.preventDefault();
+      document.getElementById('drop-zone').classList.remove('dragover');
+      const files = e.dataTransfer.files;
+      if (files && files.length > 0) {
+        await processUploadedFile(files[0]);
+      }
+    }
+
     async function handleFile(event) {
       const file = event.target.files[0];
-      if (!file) return;
+      if (file) {
+        await processUploadedFile(file);
+      }
+    }
 
+    async function processUploadedFile(file) {
       const fileStatus = document.getElementById('file-status');
       const removeBtn = document.getElementById('remove-file-btn');
-      
+      const dropZoneTitle = document.getElementById('drop-zone-title');
+      const activeNotesIndicator = document.getElementById('active-notes-indicator');
+      const summaryFileNotice = document.getElementById('summary-file-notice');
+
       fileStatus.textContent = `Reading ${file.name}...`;
       fileStatus.style.display = "inline";
 
       try {
         if (file.type === "application/pdf" || file.name.endsWith(".pdf")) {
-          // Read PDF
           const arrayBuffer = await file.arrayBuffer();
           const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
           let fullText = "";
@@ -408,29 +955,56 @@
           }
           uploadedDocumentText = fullText;
         } else {
-          // Plain text / code file
           uploadedDocumentText = await file.text();
         }
 
         uploadedDocumentName = file.name;
-        fileStatus.textContent = `📎 ${file.name} (Attached)`;
+        fileStatus.textContent = `📎 ${file.name}`;
         removeBtn.style.display = "inline";
+        activeNotesIndicator.textContent = `Attached: ${file.name}`;
+        activeNotesIndicator.style.color = "#34d399";
+        
+        if (dropZoneTitle) {
+          dropZoneTitle.textContent = `✓ Attached: ${file.name}`;
+        }
+        if (summaryFileNotice) {
+          summaryFileNotice.innerHTML = `✓ Ready to summarize: <b style="color:#34d399;">${file.name}</b>`;
+        }
+
+        // Track stats
+        progressData.docsAnalyzed++;
+        saveProgress();
+
       } catch (err) {
         alert("Could not read file: " + err.message);
         removeFile();
       }
     }
 
-    // Remove attached file
     function removeFile() {
       uploadedDocumentText = "";
       uploadedDocumentName = "";
       document.getElementById('file-input').value = "";
       document.getElementById('file-status').style.display = "none";
       document.getElementById('remove-file-btn').style.display = "none";
+      document.getElementById('active-notes-indicator').textContent = "No document loaded";
+      document.getElementById('active-notes-indicator').style.color = "#64748b";
+
+      const dropZoneTitle = document.getElementById('drop-zone-title');
+      if (dropZoneTitle) dropZoneTitle.textContent = "Drag & drop your PDF or notes here";
+
+      const summaryFileNotice = document.getElementById('summary-file-notice');
+      if (summaryFileNotice) summaryFileNotice.textContent = "No document attached yet. You can attach a PDF above or paste notes below.";
     }
 
-    // 5. Send message function
+    // =========================================================================
+    // FEATURE 1: CHAT & DOUBTS (Step-by-step Doubt Clarification)
+    // =========================================================================
+    function sendQuickPrompt(promptText) {
+      document.getElementById('user-input').value = promptText;
+      sendMessage();
+    }
+
     async function sendMessage() {
       const input = document.getElementById('user-input');
       const text = input.value.trim();
@@ -439,6 +1013,7 @@
 
       if (!text) return;
 
+      // Ensure API Key exists
       if (!API_KEY) {
         const userKey = prompt("Please enter your Google Gemini API Key to chat:");
         if (userKey && userKey.trim()) {
@@ -449,17 +1024,18 @@
         }
       }
 
-      // Hide welcome banner on first question
+      // Hide welcome banner once chatting begins
       const welcome = document.getElementById('welcome-box');
       if (welcome) welcome.style.display = 'none';
 
-      // Append user's message bubble
       appendMessage("You", text, "user");
       input.value = "";
       input.focus();
-
-      // Disable button while waiting for response
       sendBtn.disabled = true;
+
+      // Track doubts asked
+      progressData.doubtsAsked++;
+      saveProgress();
 
       // Show typing indicator
       const typingId = "typing-" + Date.now();
@@ -468,51 +1044,46 @@
       typingDiv.id = typingId;
       typingDiv.innerHTML = `
         <span class="sender-name">Gemini Bot</span>
-        <div class="bubble typing">Thinking...</div>
+        <div class="bubble typing">Explaining step-by-step...</div>
       `;
       chatWindow.appendChild(typingDiv);
       chatWindow.scrollTop = chatWindow.scrollHeight;
 
-      // Build the prompt (include document if attached)
+      // Prompt injection with attached notes
       let promptToSend = text;
       if (uploadedDocumentText) {
-        promptToSend = `[Attached Document: ${uploadedDocumentName}]\n${uploadedDocumentText}\n\n[User Question]: ${text}`;
+        promptToSend = `[Attached Notes / Study Material: ${uploadedDocumentName}]\n${uploadedDocumentText.slice(0, 40000)}\n\n[Student Doubt/Question]: ${text}`;
       }
 
-      // Add user turn to conversation history
       chatHistory.push({
         role: "user",
         parts: [{ text: promptToSend }]
       });
 
       try {
-        // Call Google Gemini API
         const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${MODEL_NAME}:generateContent?key=${API_KEY}`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             contents: chatHistory,
             systemInstruction: {
-              parts: [{ text: "You are a friendly, helpful AI study assistant. Keep answers clear, accurate, and easy to understand for students." }]
+              parts: [{ text: "You are an encouraging, patient student study assistant specializing in step-by-step doubt clearing. When answering doubts: 1. Give a crystal clear direct answer. 2. Break down the concept into step-by-step logic. 3. Use simple real-world analogies. 4. Highlight key formulas or terms." }]
             }
           })
         });
 
-        // Remove typing indicator
         document.getElementById(typingId)?.remove();
 
         if (!response.ok) {
-          const errorData = await response.json();
-          throw new Error(errorData.error?.message || "Failed to get reply from Gemini.");
+          const err = await response.json();
+          throw new Error(err.error?.message || "Could not generate reply.");
         }
 
         const data = await response.json();
-        const replyText = data.candidates?.[0]?.content?.parts?.[0]?.text || "Sorry, I couldn't understand that.";
+        const replyText = data.candidates?.[0]?.content?.parts?.[0]?.text || "I couldn't process that question. Please try again.";
 
-        // Append bot reply bubble
         appendMessage("Gemini Bot", replyText, "bot");
 
-        // Save bot turn in history so it remembers next time!
         chatHistory.push({
           role: "model",
           parts: [{ text: replyText }]
@@ -527,36 +1098,310 @@
       }
     }
 
-    // 6. Helper: Add a bubble to chat window
     function appendMessage(sender, text, type) {
       const chatWindow = document.getElementById('chat-window');
       const msgDiv = document.createElement('div');
       msgDiv.className = `message ${type}`;
-
-      // Convert markdown for bot, escape for user
-      const formattedContent = (type === "bot") ? marked.parse(text) : escapeHtml(text);
-
+      const formatted = (type === "bot") ? marked.parse(text) : escapeHtml(text);
       msgDiv.innerHTML = `
         <span class="sender-name">${sender}</span>
-        <div class="bubble">${formattedContent}</div>
+        <div class="bubble">${formatted}</div>
       `;
-
       chatWindow.appendChild(msgDiv);
       chatWindow.scrollTop = chatWindow.scrollHeight;
     }
 
-    // 7. Clear chat function
     function clearChat() {
       chatHistory = [];
       const chatWindow = document.getElementById('chat-window');
       chatWindow.innerHTML = `
         <div class="welcome-box" id="welcome-box">
-          🧹 <b>Chat history cleared!</b> Ask a new question to start over.
+          🧹 <b>Chat cleared!</b> Feel free to ask a new question or drag in a new document.
         </div>
       `;
     }
 
-    // Escape HTML to prevent injection
+    // =========================================================================
+    // FEATURE 2: SMART SUMMARIZATION (1-Click Key Takeaways & Formulas)
+    // =========================================================================
+    async function generateSmartSummary() {
+      const customText = document.getElementById('summary-custom-text').value.trim();
+      const contentToSummarize = uploadedDocumentText || customText;
+
+      if (!contentToSummarize) {
+        alert("Please attach a PDF/notes file or paste notes text first!");
+        return;
+      }
+
+      const summaryBtn = document.getElementById('summary-btn');
+      const resultCard = document.getElementById('summary-result-card');
+      const outputDiv = document.getElementById('summary-output');
+
+      summaryBtn.disabled = true;
+      summaryBtn.textContent = "Summarizing Notes...";
+      resultCard.style.display = "block";
+      outputDiv.innerHTML = "<em>Analyzing material and generating high-yield summary...</em>";
+
+      const prompt = `Please create a comprehensive 'Smart Study Summary' from these student notes:
+${contentToSummarize.slice(0, 45000)}
+
+Structure your output cleanly with markdown using these exact sections:
+1. 📌 **Executive Overview** (3-4 sentence core idea)
+2. 🔑 **Key Concepts & Definitions** (bullet points with bold terms)
+3. 📐 **Important Formulas, Rules & Principles** (equations or core rules)
+4. 💡 **Top 5 Must-Know Exam Takeaways**
+5. ⚠️ **Common Mistakes / Confusing Points to Avoid**`;
+
+      try {
+        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${MODEL_NAME}:generateContent?key=${API_KEY}`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            contents: [{ role: "user", parts: [{ text: prompt }] }]
+          })
+        });
+
+        const data = await response.json();
+        const summaryText = data.candidates?.[0]?.content?.parts?.[0]?.text || "Could not generate summary.";
+        outputDiv.innerHTML = marked.parse(summaryText);
+        window.lastGeneratedSummary = summaryText;
+
+      } catch (err) {
+        outputDiv.innerHTML = `<span style="color:#f87171;">Error generating summary: ${err.message}</span>`;
+      } finally {
+        summaryBtn.disabled = false;
+        summaryBtn.textContent = "✨ Generate 1-Click Summary";
+      }
+    }
+
+    function copySummaryText() {
+      if (window.lastGeneratedSummary) {
+        navigator.clipboard.writeText(window.lastGeneratedSummary);
+        alert("Summary copied to clipboard!");
+      }
+    }
+
+    // =========================================================================
+    // FEATURE 3: STUDY PLANNER (Custom Exam Schedule)
+    // =========================================================================
+    async function generateStudyPlan() {
+      const subject = document.getElementById('plan-subject').value.trim() || (uploadedDocumentName || "My Subject");
+      const days = document.getElementById('plan-days').value;
+      const hours = document.getElementById('plan-hours').value;
+
+      const btn = document.getElementById('planner-btn');
+      const resultCard = document.getElementById('planner-result-card');
+      const outputDiv = document.getElementById('planner-output');
+
+      btn.disabled = true;
+      btn.textContent = "Creating Schedule...";
+      resultCard.style.display = "block";
+      outputDiv.innerHTML = "<em>Generating personalized daily study schedule...</em>";
+
+      const prompt = `Create a realistic, motivating daily Study Plan for a student preparing for:
+Subject: ${subject}
+Time until exam: ${days}
+Available study time: ${hours}
+${uploadedDocumentText ? `Reference Material Topics: ${uploadedDocumentText.slice(0, 10000)}` : ''}
+
+Format with markdown:
+1. 🎯 **Exam Goal & Strategy**
+2. 🗓️ **Day-by-Day Schedule** (Break down each day: Topic, Practice Tasks, and Rest Intervals)
+3. 🔁 **Spaced Repetition Review Milestones**
+4. 🏁 **Final Day / Mock Exam Strategy**`;
+
+      try {
+        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${MODEL_NAME}:generateContent?key=${API_KEY}`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            contents: [{ role: "user", parts: [{ text: prompt }] }]
+          })
+        });
+
+        const data = await response.json();
+        const planText = data.candidates?.[0]?.content?.parts?.[0]?.text || "Could not generate study plan.";
+        outputDiv.innerHTML = marked.parse(planText);
+        progressData.savedPlan = planText;
+        saveProgress();
+
+      } catch (err) {
+        outputDiv.innerHTML = `<span style="color:#f87171;">Error creating plan: ${err.message}</span>`;
+      } finally {
+        btn.disabled = false;
+        btn.textContent = "📅 Create My Study Schedule";
+      }
+    }
+
+    function savePlanLocally() {
+      if (progressData.savedPlan) {
+        alert("Schedule saved! It will stay here whenever you return.");
+      }
+    }
+
+    // =========================================================================
+    // FEATURE 4: PROGRESS TRACKER & PRACTICE QUIZ
+    // =========================================================================
+    function renderProgressStats() {
+      document.getElementById('stat-doubts').textContent = progressData.doubtsAsked || 0;
+      document.getElementById('stat-docs').textContent = progressData.docsAnalyzed || 0;
+      document.getElementById('stat-quizzes').textContent = progressData.quizzesCompleted || 0;
+      document.getElementById('stat-weak-count').textContent = progressData.weakAreas.filter(w => !w.mastered).length;
+    }
+
+    function renderWeakAreas() {
+      const list = document.getElementById('weak-areas-list');
+      if (!progressData.weakAreas || progressData.weakAreas.length === 0) {
+        list.innerHTML = `<div style="font-size: 0.82rem; color: #64748b; font-style: italic;">No weak areas logged yet. Add difficult topics above!</div>`;
+        return;
+      }
+
+      list.innerHTML = progressData.weakAreas.map((w, i) => `
+        <div class="weak-item ${w.mastered ? 'mastered' : ''}">
+          <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+            <input type="checkbox" ${w.mastered ? 'checked' : ''} onchange="toggleWeakArea('${w.id}')">
+            <span>${escapeHtml(w.text)}</span>
+          </label>
+          <button onclick="deleteWeakArea('${w.id}')" style="background:none; border:none; color:#f87171; cursor:pointer; font-size:0.75rem;">Delete</button>
+        </div>
+      `).join('');
+    }
+
+    function addWeakArea() {
+      const input = document.getElementById('new-weak-input');
+      const val = input.value.trim();
+      if (!val) return;
+      progressData.weakAreas.unshift({
+        id: 'wa_' + Date.now(),
+        text: val,
+        mastered: false
+      });
+      input.value = "";
+      saveProgress();
+      renderWeakAreas();
+    }
+
+    function toggleWeakArea(id) {
+      const item = progressData.weakAreas.find(w => w.id === id);
+      if (item) item.mastered = !item.mastered;
+      saveProgress();
+      renderWeakAreas();
+    }
+
+    function deleteWeakArea(id) {
+      progressData.weakAreas = progressData.weakAreas.filter(w => w.id !== id);
+      saveProgress();
+      renderWeakAreas();
+    }
+
+    function saveProgress() {
+      localStorage.setItem('student_tracker_data', JSON.stringify(progressData));
+      renderProgressStats();
+    }
+
+    // Interactive 3-Question MCQ Quiz to test knowledge
+    async function generatePracticeQuiz() {
+      const btn = document.getElementById('quiz-btn');
+      const container = document.getElementById('quiz-container');
+      const banner = document.getElementById('quiz-score-banner');
+
+      const sourceText = uploadedDocumentText || "General Computer Science and Study Skills";
+
+      btn.disabled = true;
+      btn.textContent = "Building Quiz...";
+      container.style.display = "block";
+      banner.style.display = "none";
+      container.innerHTML = "<em>Generating 3 multiple choice questions based on your notes...</em>";
+
+      const prompt = `Create a 3-question Multiple Choice Quiz (MCQ) for students based on:
+${sourceText.slice(0, 15000)}
+
+Return ONLY valid JSON in this exact structure without markdown backticks:
+[
+  {
+    "question": "Question text here?",
+    "options": ["Option A", "Option B", "Option C", "Option D"],
+    "answerIndex": 0,
+    "explanation": "Why Option A is correct"
+  }
+]`;
+
+      try {
+        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${MODEL_NAME}:generateContent?key=${API_KEY}`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            contents: [{ role: "user", parts: [{ text: prompt }] }]
+          })
+        });
+
+        const data = await response.json();
+        let raw = data.candidates?.[0]?.content?.parts?.[0]?.text || "[]";
+        raw = raw.replace(/```json/g, '').replace(/```/g, '').trim();
+        const questions = JSON.parse(raw);
+
+        renderQuizQuestions(questions);
+
+      } catch (err) {
+        container.innerHTML = `<span style="color:#f87171;">Could not generate quiz: ${err.message}. Try asking a question in Chat.</span>`;
+      } finally {
+        btn.disabled = false;
+        btn.textContent = "⚡ Generate 3-Question Practice Quiz";
+      }
+    }
+
+    function renderQuizQuestions(questions) {
+      const container = document.getElementById('quiz-container');
+      window.currentQuiz = questions;
+      window.quizScore = 0;
+      window.answeredCount = 0;
+
+      container.innerHTML = questions.map((q, qIndex) => `
+        <div class="quiz-question" id="quiz-q-${qIndex}">
+          <div class="quiz-q-title">Question ${qIndex + 1}: ${escapeHtml(q.question)}</div>
+          <div class="quiz-options">
+            ${q.options.map((opt, optIndex) => `
+              <button class="quiz-opt" onclick="selectQuizOption(${qIndex}, ${optIndex}, this)">
+                ${String.fromCharCode(65 + optIndex)}) ${escapeHtml(opt)}
+              </button>
+            `).join('')}
+          </div>
+          <div id="quiz-exp-${qIndex}" style="margin-top:8px; font-size:0.8rem; color:#93c5fd; display:none;"></div>
+        </div>
+      `).join('');
+    }
+
+    function selectQuizOption(qIndex, optIndex, btnElement) {
+      const q = window.currentQuiz[qIndex];
+      const parent = document.getElementById(`quiz-q-${qIndex}`);
+      const expDiv = document.getElementById(`quiz-exp-${qIndex}`);
+      const banner = document.getElementById('quiz-score-banner');
+
+      // Disable all options for this question
+      const allBtns = parent.querySelectorAll('.quiz-opt');
+      allBtns.forEach(b => b.disabled = true);
+
+      if (optIndex === q.answerIndex) {
+        btnElement.classList.add('correct');
+        window.quizScore++;
+      } else {
+        btnElement.classList.add('incorrect');
+        // highlight correct answer
+        allBtns[q.answerIndex].classList.add('correct');
+      }
+
+      expDiv.textContent = `💡 Explanation: ${q.explanation}`;
+      expDiv.style.display = 'block';
+
+      window.answeredCount++;
+      if (window.answeredCount === window.currentQuiz.length) {
+        banner.style.display = 'block';
+        banner.textContent = `🎉 Quiz Complete! Your Score: ${window.quizScore} / ${window.currentQuiz.length} (${Math.round((window.quizScore / window.currentQuiz.length) * 100)}%)`;
+        progressData.quizzesCompleted++;
+        saveProgress();
+      }
+    }
+
     function escapeHtml(str) {
       const p = document.createElement('p');
       p.textContent = str;

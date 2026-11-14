@@ -3,7 +3,6 @@
 My AI Chatbot Project - Student Edition
 Course: Computer Science / AI Intro
 Author: Ayaan
-Powered by Google Gemini API
 =========================================================
 """
 
