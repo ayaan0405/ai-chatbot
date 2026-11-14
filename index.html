@@ -3,63 +3,276 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Student AI Chatbot Project</title>
+  <title>AI Study Studio</title>
   
-  <!-- Markdown parser for nice text formatting -->
+  <!-- Markdown parser -->
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-  <!-- PDF.js to read uploaded PDF files -->
+  <!-- PDF.js to read uploaded PDF files client-side -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
   <!-- Optional local config for API key (gitignored) -->
   <script src="config.js" onerror="/* optional */"></script>
 
   <style>
     /* =========================================================
-       Student Project Stylesheet - Dark Mode
-       Clean, modern, and student-focused
+       Full-Page Modern UI Design (Edge-to-Edge)
        ========================================================= */
+    :root {
+      --bg-base: #090d16;
+      --bg-surface: #0f172a;
+      --bg-card: #141e33;
+      --bg-hover: #1c2a47;
+      --border-subtle: #1e293b;
+      --border-highlight: #2e3e5c;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      --brand-blue: #2563eb;
+      --brand-blue-hover: #1d4ed8;
+      --brand-cyan: #06b6d4;
+      --accent-green: #10b981;
+      --accent-red: #ef4444;
+      --accent-amber: #f59e0b;
+    }
+
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, Helvetica, Arial, sans-serif;
     }
 
-    body {
-      background-color: #090d16;
-      color: #e2e8f0;
-      display: flex;
-      justify-content: center;
-      padding: 16px;
-      min-height: 100vh;
-    }
-
-    /* Main Container (Centered Card) */
-    .app-card {
-      background: #131b2e;
+    html, body {
       width: 100%;
-      max-width: 860px;
-      height: 92vh;
-      border-radius: 16px;
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      background-color: var(--bg-base);
+      color: var(--text-main);
+    }
+
+    /* Full App Wrapper */
+    .app-layout {
+      display: flex;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* =========================================================
+       SIDEBAR NAVIGATION
+       ========================================================= */
+    .sidebar {
+      width: 280px;
+      background-color: var(--bg-surface);
+      border-right: 1px solid var(--border-subtle);
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+      z-index: 20;
+      transition: transform 0.3s ease;
+    }
+
+    .sidebar-header {
+      padding: 20px 18px 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .brand-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #2563eb, #06b6d4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+    }
+
+    .brand-title {
+      font-weight: 700;
+      font-size: 1.05rem;
+      letter-spacing: -0.02em;
+      color: #ffffff;
+    }
+
+    .brand-subtitle {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+    }
+
+    /* Sidebar Nav Buttons */
+    .nav-section {
+      padding: 14px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .nav-label {
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-dim);
+      padding: 0 8px 6px;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      border-radius: 9px;
+      border: 1px solid transparent;
+      background: transparent;
+      color: var(--text-muted);
+      font-size: 0.88rem;
+      font-weight: 500;
+      cursor: pointer;
+      text-align: left;
+      transition: all 0.2s ease;
+      width: 100%;
+    }
+
+    .nav-item:hover {
+      background-color: var(--bg-hover);
+      color: var(--text-main);
+    }
+
+    .nav-item.active {
+      background-color: #1a2a4a;
+      border-color: #2b4578;
+      color: #60a5fa;
+      font-weight: 600;
+    }
+
+    .nav-item-icon {
+      font-size: 1.05rem;
+    }
+
+    /* Document Upload Widget in Sidebar */
+    .docs-widget {
+      margin: auto 12px 14px;
+      padding: 14px;
+      background: var(--bg-card);
+      border: 1px dashed #2a3d66;
+      border-radius: 12px;
+      transition: all 0.2s ease;
+    }
+
+    .docs-widget.dragover {
+      background: #172a52;
+      border-color: #3b82f6;
+    }
+
+    .docs-widget-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+
+    .docs-widget-title {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    .upload-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      width: 100%;
+      padding: 8px;
+      background: #1e2e50;
+      color: #93c5fd;
+      border: 1px solid #2e4475;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .upload-btn:hover {
+      background: #273d6b;
+      color: #ffffff;
+    }
+
+    .attached-file-badge {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 10px;
+      padding: 8px 10px;
+      background: #091224;
+      border: 1px solid #1c3258;
+      border-radius: 8px;
+      font-size: 0.78rem;
+    }
+
+    .attached-file-name {
+      color: var(--accent-green);
+      font-weight: 500;
+      max-width: 170px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .attached-file-remove {
+      color: var(--accent-red);
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 0.85rem;
+      padding: 2px 4px;
+    }
+
+    /* Sidebar Footer */
+    .sidebar-footer {
+      padding: 12px 16px;
+      border-top: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.75rem;
+      color: var(--text-dim);
+    }
+
+    /* =========================================================
+       MAIN CONTENT WORKSPACE
+       ========================================================= */
+    .main-workspace {
+      flex: 1;
+      height: 100%;
       display: flex;
       flex-direction: column;
       overflow: hidden;
-      border: 1px solid #1e293b;
+      background-color: var(--bg-base);
+      position: relative;
     }
 
-    /* Header */
-    header {
-      background: #1a243a;
-      border-bottom: 1px solid #23314d;
-      color: #f8fafc;
-      padding: 14px 20px;
+    /* Top Navigation Bar */
+    .top-header {
+      height: 56px;
+      background-color: var(--bg-surface);
+      border-bottom: 1px solid var(--border-subtle);
       display: flex;
-      justify-content: space-between;
       align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      flex-shrink: 0;
     }
 
-    header h1 {
-      font-size: 1.25rem;
+    .active-view-title {
+      font-size: 0.95rem;
       font-weight: 600;
       display: flex;
       align-items: center;
@@ -67,767 +280,898 @@
       color: #ffffff;
     }
 
-    header .subtitle {
-      font-size: 0.8rem;
-      color: #94a3b8;
-      margin-top: 2px;
-    }
-
-    /* Navigation Tabs */
-    .nav-tabs {
-      display: flex;
-      background: #0f172a;
-      border-bottom: 1px solid #1e293b;
-      padding: 0 12px;
-      gap: 4px;
-      overflow-x: auto;
-    }
-
-    .nav-btn {
-      background: none;
-      border: none;
-      color: #94a3b8;
-      padding: 10px 14px;
-      font-size: 0.85rem;
-      font-weight: 500;
-      cursor: pointer;
-      border-bottom: 2px solid transparent;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      white-space: nowrap;
-      transition: all 0.2s;
-    }
-
-    .nav-btn:hover {
-      color: #f1f5f9;
-      background: rgba(255, 255, 255, 0.03);
-    }
-
-    .nav-btn.active {
-      color: #3b82f6;
-      border-bottom-color: #3b82f6;
-      font-weight: 600;
-    }
-
-    /* Attached Notes / Document Bar */
-    .file-bar {
-      background: #0d1424;
-      padding: 8px 16px;
-      border-bottom: 1px solid #1e293b;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-      font-size: 0.82rem;
-    }
-
-    .file-input-label {
-      background: #1e293b;
-      color: #cbd5e1;
-      padding: 5px 12px;
-      border-radius: 6px;
-      cursor: pointer;
-      font-weight: 500;
+    .doc-status-indicator {
       display: inline-flex;
       align-items: center;
-      gap: 5px;
-      border: 1px solid #334155;
-      transition: all 0.2s;
-      font-size: 0.82rem;
-    }
-
-    .file-input-label:hover {
-      background: #27354f;
-      color: #ffffff;
-      border-color: #475569;
-    }
-
-    .file-name {
+      gap: 6px;
+      font-size: 0.78rem;
+      padding: 4px 10px;
+      border-radius: 20px;
+      background: rgba(16, 185, 129, 0.1);
+      border: 1px solid rgba(16, 185, 129, 0.25);
       color: #34d399;
-      font-weight: 500;
-      max-width: 320px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
     }
 
-    .remove-file-btn {
-      color: #f87171;
-      background: none;
-      border: none;
-      cursor: pointer;
-      font-size: 0.8rem;
-      font-weight: bold;
-      margin-left: 5px;
-    }
-    .remove-file-btn:hover {
-      text-decoration: underline;
-    }
-
-    /* Tab Content Panels */
-    .tab-panel {
+    /* Workspace Content Panels */
+    .view-panel {
       flex: 1;
-      overflow-y: auto;
       display: none;
-      flex-direction: column;
+      height: calc(100vh - 56px);
+      overflow-y: auto;
     }
 
-    .tab-panel.active {
+    .view-panel.active {
       display: flex;
+      flex-direction: column;
     }
 
     /* =========================================================
-       1. Chat & Doubts Tab Styles
+       PANEL 1: CHAT & DOUBTS (Full-Height Chat System)
        ========================================================= */
-    .chat-window {
+    .chat-scroll-area {
       flex: 1;
-      padding: 16px 20px;
       overflow-y: auto;
-      background: #0b1120;
+      padding: 24px 15% 16px;
       display: flex;
       flex-direction: column;
-      gap: 14px;
+      gap: 20px;
     }
 
-    /* Drag & Drop Zone Box inside Welcome area */
-    .welcome-box {
-      background: #131d33;
-      border: 1px solid #233354;
-      border-radius: 12px;
-      padding: 16px;
+    @media (max-width: 1024px) {
+      .chat-scroll-area { padding: 20px 20px 16px; }
+    }
+
+    /* Hero Welcome Screen */
+    .chat-hero {
+      margin: auto auto;
+      max-width: 680px;
+      width: 100%;
       text-align: center;
-      color: #93c5fd;
-      line-height: 1.5;
+      padding: 30px 10px;
     }
 
-    .drop-zone {
-      margin-top: 12px;
-      border: 2px dashed #3b82f6;
-      background: #0f182c;
-      border-radius: 10px;
-      padding: 18px 12px;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      color: #93c5fd;
-      display: flex;
-      flex-direction: column;
+    .hero-badge {
+      display: inline-flex;
       align-items: center;
       gap: 6px;
+      padding: 4px 12px;
+      border-radius: 20px;
+      background: rgba(37, 99, 235, 0.12);
+      border: 1px solid rgba(37, 99, 235, 0.3);
+      color: #93c5fd;
+      font-size: 0.8rem;
+      font-weight: 500;
+      margin-bottom: 16px;
     }
 
-    .drop-zone:hover, .drop-zone.dragover {
-      background: #1a2a4a;
-      border-color: #60a5fa;
-      transform: scale(1.01);
+    .hero-title {
+      font-size: 2rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      margin-bottom: 10px;
+      background: linear-gradient(135deg, #ffffff 40%, #94a3b8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
 
-    .drop-zone-icon {
-      font-size: 1.8rem;
-    }
-
-    .drop-zone-title {
-      font-weight: 600;
+    .hero-subtitle {
       font-size: 0.95rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin-bottom: 24px;
+    }
+
+    /* Full Hero Drop Zone */
+    .hero-dropzone {
+      border: 2px dashed #2a3f6a;
+      background: rgba(20, 30, 51, 0.6);
+      border-radius: 14px;
+      padding: 28px 20px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      margin-bottom: 24px;
+    }
+
+    .hero-dropzone:hover, .hero-dropzone.dragover {
+      background: rgba(30, 50, 90, 0.8);
+      border-color: #3b82f6;
+      transform: translateY(-2px);
+    }
+
+    .hero-dropzone-icon {
+      font-size: 2.2rem;
+      margin-bottom: 6px;
+    }
+
+    .hero-dropzone-text {
+      font-weight: 600;
+      color: #ffffff;
+      font-size: 1rem;
+    }
+
+    .hero-dropzone-sub {
+      font-size: 0.8rem;
+      color: var(--text-dim);
+      margin-top: 4px;
+    }
+
+    /* Suggestion Grid */
+    .hero-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 12px;
+      text-align: left;
+    }
+
+    .hero-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      padding: 14px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .hero-card:hover {
+      background: var(--bg-hover);
+      border-color: var(--border-highlight);
+      transform: translateY(-1px);
+    }
+
+    .hero-card-icon {
+      font-size: 1.1rem;
+      margin-bottom: 6px;
+    }
+
+    .hero-card-text {
+      font-size: 0.82rem;
+      color: var(--text-main);
+      font-weight: 500;
+      line-height: 1.4;
+    }
+
+    /* Chat Messages */
+    .message-row {
+      display: flex;
+      gap: 12px;
+      width: 100%;
+    }
+
+    .message-row.user {
+      justify-content: flex-end;
+    }
+
+    .message-row.bot {
+      justify-content: flex-start;
+    }
+
+    .avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
+      flex-shrink: 0;
+    }
+
+    .avatar.bot {
+      background: linear-gradient(135deg, #2563eb, #06b6d4);
       color: #ffffff;
     }
 
-    .drop-zone-hint {
-      font-size: 0.78rem;
+    .avatar.user {
+      background: #1e293b;
       color: #94a3b8;
     }
 
-    /* Quick Doubt Prompt Chips */
-    .doubt-chips {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      justify-content: center;
-      margin-top: 12px;
-    }
-
-    .chip-btn {
-      background: #1e293b;
-      color: #cbd5e1;
-      border: 1px solid #334155;
-      padding: 5px 10px;
-      border-radius: 20px;
-      font-size: 0.75rem;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-
-    .chip-btn:hover {
-      background: #2563eb;
-      color: white;
-      border-color: #2563eb;
-    }
-
-    /* Chat Bubbles */
-    .message {
+    .bubble-wrapper {
+      max-width: 80%;
       display: flex;
       flex-direction: column;
-      max-width: 82%;
     }
 
-    .message.user {
-      align-self: flex-end;
+    .message-row.user .bubble-wrapper {
       align-items: flex-end;
     }
 
-    .message.bot {
-      align-self: flex-start;
-      align-items: flex-start;
-    }
-
-    .sender-name {
-      font-size: 0.75rem;
-      color: #64748b;
-      margin-bottom: 4px;
-      font-weight: 500;
-    }
-
-    .bubble {
-      padding: 12px 16px;
+    .message-bubble {
+      padding: 14px 18px;
       border-radius: 14px;
-      font-size: 0.92rem;
-      line-height: 1.5;
+      font-size: 0.94rem;
+      line-height: 1.6;
       word-wrap: break-word;
     }
 
-    .message.user .bubble {
+    .message-row.user .message-bubble {
       background: #2563eb;
       color: #ffffff;
-      border-bottom-right-radius: 2px;
+      border-bottom-right-radius: 4px;
     }
 
-    .message.bot .bubble {
-      background: #17223b;
-      color: #e2e8f0;
-      border-bottom-left-radius: 2px;
-      border: 1px solid #233354;
+    .message-row.bot .message-bubble {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-main);
+      border-bottom-left-radius: 4px;
     }
 
     /* Markdown inside bot bubble */
-    .bubble p { margin-bottom: 8px; }
-    .bubble p:last-child { margin-bottom: 0; }
-    .bubble ul, .bubble ol { margin-left: 20px; margin-bottom: 8px; }
-    .bubble code {
-      background: #233354;
-      color: #bfdbfe;
-      padding: 2px 5px;
-      border-radius: 4px;
-      font-family: monospace;
-      font-size: 0.85em;
+    .message-bubble p { margin-bottom: 10px; }
+    .message-bubble p:last-child { margin-bottom: 0; }
+    .message-bubble ul, .message-bubble ol { margin-left: 22px; margin-bottom: 10px; }
+    .message-bubble li { margin-bottom: 4px; }
+    .message-bubble code {
+      background: #090e1a;
+      color: #93c5fd;
+      padding: 3px 6px;
+      border-radius: 5px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.88em;
     }
-    .bubble pre {
-      background: #090d16;
-      color: #f8fafc;
-      padding: 12px;
-      border-radius: 8px;
+    .message-bubble pre {
+      background: #060911;
+      border: 1px solid var(--border-subtle);
+      color: #f1f5f9;
+      padding: 14px;
+      border-radius: 10px;
       overflow-x: auto;
-      margin: 8px 0;
-      border: 1px solid #1e293b;
+      margin: 12px 0;
     }
-    .bubble pre code { background: transparent; color: inherit; }
+    .message-bubble pre code { background: transparent; padding: 0; }
 
-    .typing {
-      font-style: italic;
-      color: #94a3b8;
-      font-size: 0.85rem;
-    }
-
-    /* Chat Input Bar */
-    .input-area {
-      padding: 12px 20px;
-      background: #131b2e;
-      border-top: 1px solid #1e293b;
-      display: flex;
-      flex-direction: column;
+    /* Typing indicator */
+    .typing-pill {
+      display: inline-flex;
+      align-items: center;
       gap: 6px;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      font-style: italic;
     }
 
-    .input-row {
+    /* Floating Chat Input Section */
+    .input-container-outer {
+      padding: 0 15% 20px;
+      background: transparent;
+      flex-shrink: 0;
+    }
+
+    @media (max-width: 1024px) {
+      .input-container-outer { padding: 0 20px 16px; }
+    }
+
+    .input-box {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-highlight);
+      border-radius: 14px;
+      padding: 10px 14px 10px 16px;
       display: flex;
-      gap: 10px;
+      align-items: center;
+      gap: 12px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+      transition: border-color 0.2s;
+    }
+
+    .input-box:focus-within {
+      border-color: #3b82f6;
     }
 
     #user-input {
       flex: 1;
-      padding: 10px 14px;
-      background: #0b1120;
-      color: #f8fafc;
-      border: 1px solid #23314d;
-      border-radius: 8px;
-      font-size: 0.95rem;
-      outline: none;
-      transition: border-color 0.2s;
-    }
-
-    #user-input::placeholder { color: #64748b; }
-    #user-input:focus { border-color: #3b82f6; }
-
-    #send-btn {
-      background: #2563eb;
-      color: white;
+      background: transparent;
       border: none;
-      padding: 0 18px;
-      border-radius: 8px;
-      font-size: 0.92rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: background 0.2s;
+      outline: none;
+      color: #ffffff;
+      font-size: 0.95rem;
     }
 
-    #send-btn:hover { background: #1d4ed8; }
-    #send-btn:disabled { background: #334155; color: #64748b; cursor: not-allowed; }
+    #user-input::placeholder {
+      color: var(--text-dim);
+    }
 
-    .input-footer {
+    .input-send-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: var(--brand-blue);
+      border: none;
+      color: #ffffff;
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      font-size: 0.75rem;
-      color: #64748b;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: all 0.2s;
+      flex-shrink: 0;
     }
 
-    .clear-link { color: #f87171; cursor: pointer; text-decoration: underline; }
-    .clear-link:hover { color: #ef4444; }
+    .input-send-btn:hover {
+      background: var(--brand-blue-hover);
+      transform: scale(1.05);
+    }
+
+    .input-send-btn:disabled {
+      background: #1e293b;
+      color: #475569;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    /* Chips row above input */
+    .quick-chips-row {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 8px;
+      overflow-x: auto;
+      padding-bottom: 2px;
+    }
+
+    .quick-chip {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-muted);
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      white-space: nowrap;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .quick-chip:hover {
+      background: var(--bg-hover);
+      border-color: var(--brand-blue);
+      color: #ffffff;
+    }
 
     /* =========================================================
-       2. Common Form & Card Styles for Tools
+       PANEL 2, 3, 4: TOOL LAYOUTS (Summary, Planner, Tracker)
        ========================================================= */
-    .tool-container {
-      padding: 20px;
-      overflow-y: auto;
-      background: #0b1120;
-      flex: 1;
+    .tool-page {
+      padding: 30px 15%;
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: 24px;
     }
 
-    .card {
-      background: #131d33;
-      border: 1px solid #233354;
-      border-radius: 12px;
-      padding: 18px;
+    @media (max-width: 1024px) {
+      .tool-page { padding: 20px; }
     }
 
-    .card-title {
-      font-size: 1.05rem;
-      font-weight: 600;
+    .panel-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: 14px;
+      padding: 24px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+    }
+
+    .panel-card-title {
+      font-size: 1.15rem;
+      font-weight: 700;
       color: #ffffff;
       margin-bottom: 6px;
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
     }
 
-    .card-desc {
-      font-size: 0.83rem;
-      color: #94a3b8;
-      margin-bottom: 14px;
-      line-height: 1.4;
+    .panel-card-desc {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+      margin-bottom: 18px;
     }
 
-    .btn-primary {
-      background: #2563eb;
+    /* Form Inputs */
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .input-label {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+
+    .modern-input, .modern-select, .modern-textarea {
+      background: var(--bg-base);
+      border: 1px solid var(--border-highlight);
+      border-radius: 9px;
+      padding: 10px 14px;
+      color: #ffffff;
+      font-size: 0.9rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .modern-input:focus, .modern-select:focus, .modern-textarea:focus {
+      border-color: var(--brand-blue);
+    }
+
+    .primary-action-btn {
+      background: var(--brand-blue);
       color: white;
       border: none;
-      padding: 10px 18px;
-      border-radius: 8px;
+      padding: 11px 22px;
+      border-radius: 9px;
       font-size: 0.9rem;
       font-weight: 600;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
-      gap: 6px;
-      transition: background 0.2s;
+      gap: 8px;
+      transition: all 0.2s;
     }
 
-    .btn-primary:hover { background: #1d4ed8; }
-    .btn-primary:disabled { background: #334155; color: #64748b; cursor: not-allowed; }
+    .primary-action-btn:hover {
+      background: var(--brand-blue-hover);
+      transform: translateY(-1px);
+    }
 
-    .btn-secondary {
+    .primary-action-btn:disabled {
       background: #1e293b;
-      color: #cbd5e1;
-      border: 1px solid #334155;
+      color: #475569;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .secondary-btn {
+      background: var(--bg-hover);
+      color: var(--text-main);
+      border: 1px solid var(--border-highlight);
       padding: 8px 14px;
-      border-radius: 6px;
-      font-size: 0.82rem;
+      border-radius: 8px;
+      font-size: 0.8rem;
       font-weight: 500;
       cursor: pointer;
       transition: all 0.2s;
     }
 
-    .btn-secondary:hover { background: #27354f; color: white; }
-
-    .result-display {
-      background: #090e1a;
-      border: 1px solid #1e293b;
-      border-radius: 10px;
-      padding: 16px;
-      color: #e2e8f0;
-      font-size: 0.9rem;
-      line-height: 1.6;
-      margin-top: 14px;
+    .secondary-btn:hover {
+      background: #273d6b;
+      color: white;
     }
 
-    .form-group {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      margin-bottom: 12px;
+    /* Output Display Box */
+    .output-box {
+      background: var(--bg-base);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      padding: 20px;
+      font-size: 0.93rem;
+      line-height: 1.7;
+      margin-top: 18px;
     }
 
-    .form-label {
-      font-size: 0.82rem;
-      color: #cbd5e1;
-      font-weight: 500;
-    }
-
-    .form-input, .form-select {
-      background: #0b1120;
-      border: 1px solid #23314d;
-      border-radius: 8px;
-      padding: 9px 12px;
-      color: #f8fafc;
-      font-size: 0.9rem;
-      outline: none;
-    }
-    .form-input:focus, .form-select:focus { border-color: #3b82f6; }
-
-    /* =========================================================
-       3. Progress Tracker Styles
-       ========================================================= */
-    .stats-grid {
+    /* Metrics Grid in Progress Tracker */
+    .metrics-row {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-      gap: 12px;
-      margin-bottom: 14px;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 14px;
+      margin-bottom: 20px;
     }
 
-    .stat-box {
-      background: #0f172a;
-      border: 1px solid #1e293b;
-      border-radius: 10px;
-      padding: 14px;
+    .metric-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      padding: 18px;
       text-align: center;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
     }
 
-    .stat-number {
-      font-size: 1.6rem;
-      font-weight: bold;
+    .metric-value {
+      font-size: 2rem;
+      font-weight: 800;
       color: #3b82f6;
+      letter-spacing: -0.02em;
     }
 
-    .stat-label {
-      font-size: 0.75rem;
-      color: #94a3b8;
-      margin-top: 2px;
+    .metric-title {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin-top: 4px;
     }
 
-    .weak-item {
+    /* Weak Items Checklist */
+    .weak-item-row {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 8px 12px;
-      background: #0f172a;
-      border: 1px solid #1e293b;
-      border-radius: 8px;
-      margin-bottom: 6px;
-      font-size: 0.85rem;
+      padding: 10px 14px;
+      background: var(--bg-base);
+      border: 1px solid var(--border-subtle);
+      border-radius: 9px;
+      margin-bottom: 8px;
+      font-size: 0.88rem;
     }
 
-    .weak-item.mastered {
-      opacity: 0.6;
+    .weak-item-row.mastered span {
+      opacity: 0.5;
       text-decoration: line-through;
     }
 
-    /* MCQ Interactive Quiz in Tracker */
-    .quiz-question {
-      background: #0f172a;
-      border: 1px solid #1e293b;
-      border-radius: 10px;
-      padding: 14px;
+    /* Quiz MCQ Elements */
+    .mcq-card {
+      background: var(--bg-base);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 14px;
+    }
+
+    .mcq-q {
+      font-size: 0.93rem;
+      font-weight: 600;
+      color: #ffffff;
       margin-bottom: 12px;
     }
-    .quiz-q-title {
-      font-size: 0.9rem;
-      font-weight: 600;
-      color: #f8fafc;
-      margin-bottom: 10px;
-    }
-    .quiz-opt {
+
+    .mcq-opt {
       display: block;
       width: 100%;
       text-align: left;
-      padding: 8px 12px;
-      background: #131d33;
-      border: 1px solid #233354;
-      border-radius: 6px;
-      color: #cbd5e1;
-      font-size: 0.85rem;
-      margin-bottom: 6px;
+      padding: 10px 14px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-highlight);
+      border-radius: 8px;
+      color: var(--text-main);
+      font-size: 0.88rem;
+      margin-bottom: 8px;
       cursor: pointer;
       transition: all 0.2s;
     }
-    .quiz-opt:hover { background: #1e2c4a; border-color: #3b82f6; }
-    .quiz-opt.correct { background: #064e3b; border-color: #059669; color: #a7f3d0; font-weight: 600; }
-    .quiz-opt.incorrect { background: #7f1d1d; border-color: #dc2626; color: #fecaca; }
+
+    .mcq-opt:hover {
+      background: var(--bg-hover);
+      border-color: #3b82f6;
+    }
+
+    .mcq-opt.correct {
+      background: rgba(16, 185, 129, 0.2);
+      border-color: var(--accent-green);
+      color: #a7f3d0;
+      font-weight: 600;
+    }
+
+    .mcq-opt.incorrect {
+      background: rgba(239, 68, 68, 0.2);
+      border-color: var(--accent-red);
+      color: #fecaca;
+    }
   </style>
 </head>
 <body>
 
-  <div class="app-card">
-    <!-- Header -->
-    <header>
-      <div>
-        <h1>🎓 My AI Chatbot</h1>
-        <div class="subtitle">CS Project</div>
-      </div>
-    </header>
-
-    <!-- Navigation Tabs -->
-    <nav class="nav-tabs">
-      <button class="nav-btn active" onclick="switchTab('chat')">💬 Chat & Doubts</button>
-      <button class="nav-btn" onclick="switchTab('summary')">📝 Smart Summary</button>
-      <button class="nav-btn" onclick="switchTab('planner')">📅 Study Planner</button>
-      <button class="nav-btn" onclick="switchTab('progress')">📊 Progress Tracker</button>
-    </nav>
-
-    <!-- Attached Notes / Document Bar (visible across all tabs) -->
-    <div class="file-bar">
-      <div style="display: flex; align-items: center; gap: 8px;">
-        <label class="file-input-label">
-          📎 Attach Notes / PDF
-          <input type="file" id="file-input" style="display: none;" accept=".pdf,.txt,.md,.py,.js" onchange="handleFile(event)">
-        </label>
-        <span id="file-status" class="file-name" style="display: none;"></span>
-        <button id="remove-file-btn" class="remove-file-btn" style="display: none;" onclick="removeFile()">✕ Remove</button>
-      </div>
-      <span style="font-size: 0.75rem; color: #64748b;" id="active-notes-indicator">No document loaded</span>
-    </div>
-
+  <div class="app-layout">
+    
     <!-- =========================================================
-         TAB 1: Chat & Doubts (Step-by-step doubt clearing)
+         LEFT SIDEBAR
          ========================================================= -->
-    <div class="tab-panel active" id="tab-chat">
-      <div class="chat-window" id="chat-window">
+    <aside class="sidebar">
+      
+      <!-- Brand Header -->
+      <div class="sidebar-header">
+        <div class="brand-icon">✨</div>
+        <div>
+          <div class="brand-title">AI Study Studio</div>
+          <div class="brand-subtitle">Smart Doubt & Study Companion</div>
+        </div>
+      </div>
+
+      <!-- Navigation Tabs -->
+      <div class="nav-section">
+        <div class="nav-label">Workspace</div>
         
-        <!-- Welcome Box with Drag & Drop Feature -->
-        <div class="welcome-box" id="welcome-box">
-          <div style="font-weight: 600; font-size: 1.05rem; color: #ffffff; margin-bottom: 4px;">
-            👋 Hi there! I'm your AI Study Assistant.
-          </div>
-          <div style="font-size: 0.85rem; color: #94a3b8;">
-            Ask me to explain any difficult concept step-by-step, clarify doubts, or upload notes/PDF below!
-          </div>
+        <button class="nav-item active" onclick="switchTab('chat')">
+          <span class="nav-item-icon">💬</span>
+          <span>Chat & Doubts</span>
+        </button>
 
-          <!-- Drag and Drop Dropzone -->
-          <div 
-            class="drop-zone" 
-            id="drop-zone"
-            onclick="document.getElementById('file-input').click()"
-            ondragover="handleDragOver(event)"
-            ondragleave="handleDragLeave(event)"
-            ondrop="handleDrop(event)"
-          >
-            <div class="drop-zone-icon">📥</div>
-            <div class="drop-zone-title" id="drop-zone-title">Drag & drop your PDF or notes here</div>
-            <div class="drop-zone-hint">Supports PDF, TXT, MD, Python, JS files</div>
-          </div>
+        <button class="nav-item" onclick="switchTab('summary')">
+          <span class="nav-item-icon">📝</span>
+          <span>Smart Summary</span>
+        </button>
 
-          <!-- Quick Doubt Clarification Chips -->
-          <div class="doubt-chips">
-            <button class="chip-btn" onclick="sendQuickPrompt('Explain this concept step-by-step with a simple real-world analogy.')">
-              💡 Explain step-by-step
-            </button>
-            <button class="chip-btn" onclick="sendQuickPrompt('Break down the most difficult formula or rule in my notes.')">
-              📐 Break down difficult formula
-            </button>
-            <button class="chip-btn" onclick="sendQuickPrompt('Give me a simple practice example to test if I understand this.')">
-              ✍️ Practice example
-            </button>
-          </div>
-        </div>
+        <button class="nav-item" onclick="switchTab('planner')">
+          <span class="nav-item-icon">📅</span>
+          <span>Study Planner</span>
+        </button>
 
+        <button class="nav-item" onclick="switchTab('progress')">
+          <span class="nav-item-icon">📊</span>
+          <span>Progress Tracker</span>
+        </button>
       </div>
 
-      <!-- Input Box -->
-      <div class="input-area">
-        <div class="input-row">
-          <input 
-            type="text" 
-            id="user-input" 
-            placeholder="Ask a doubt or question... (Press Enter to send)" 
-            onkeydown="if(event.key === 'Enter') sendMessage()"
-          >
-          <button id="send-btn" onclick="sendMessage()">Send 🚀</button>
+      <!-- Attached Documents Dropzone Widget in Sidebar -->
+      <div class="docs-widget" id="sidebar-dropzone" 
+           ondragover="handleDragOver(event)" 
+           ondragleave="handleDragLeave(event)" 
+           ondrop="handleDrop(event)">
+        <div class="docs-widget-header">
+          <span class="docs-widget-title">📁 Reference Material</span>
         </div>
-        <div class="input-footer">
-          <span>Step-by-step doubt clearing active</span>
-          <span class="clear-link" onclick="clearChat()">Clear Chat</span>
+        <button class="upload-btn" onclick="document.getElementById('file-input').click()">
+          <span>📎 Attach PDF or Notes</span>
+        </button>
+        <input type="file" id="file-input" style="display: none;" accept=".pdf,.txt,.md,.py,.js" onchange="handleFile(event)">
+
+        <div id="attached-file-box" class="attached-file-badge" style="display: none;">
+          <span class="attached-file-name" id="attached-file-name">filename.pdf</span>
+          <button class="attached-file-remove" onclick="removeFile()" title="Remove file">✕</button>
         </div>
       </div>
-    </div>
+
+      <!-- Sidebar Footer -->
+      <div class="sidebar-footer">
+        <span>Step-by-Step AI Engine</span>
+        <button class="secondary-btn" onclick="clearChat()" style="padding: 4px 8px; font-size: 0.72rem;">Clear Chat</button>
+      </div>
+
+    </aside>
 
     <!-- =========================================================
-         TAB 2: Smart Summary (1-Click Summary from PDF)
+         MAIN WORKSPACE AREA
          ========================================================= -->
-    <div class="tab-panel" id="tab-summary">
-      <div class="tool-container">
-        <div class="card">
-          <div class="card-title">📝 Smart Note Summarizer</div>
-          <div class="card-desc">
-            Convert lengthy textbook chapters or lecture notes into structured summaries, key formulas, definitions, and high-yield takeaways.
-          </div>
-
-          <div id="summary-file-notice" style="margin-bottom: 14px; font-size: 0.85rem; color: #94a3b8;">
-            No document attached yet. You can attach a PDF above or paste notes below.
-          </div>
-
-          <div class="form-group">
-            <label class="form-label">Or Paste Notes Text directly (Optional):</label>
-            <textarea id="summary-custom-text" class="form-input" rows="3" placeholder="Paste lecture notes or chapter text here if you don't have a PDF file..."></textarea>
-          </div>
-
-          <button id="summary-btn" class="btn-primary" onclick="generateSmartSummary()">
-            ✨ Generate 1-Click Summary
-          </button>
+    <main class="main-workspace">
+      
+      <!-- Top Workspace Bar -->
+      <header class="top-header">
+        <div class="active-view-title" id="current-view-title">
+          <span>💬</span> Chat & Doubts
         </div>
-
-        <div id="summary-result-card" class="card" style="display: none;">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-            <div class="card-title" style="margin-bottom: 0;">📋 Generated Summary</div>
-            <button class="btn-secondary" onclick="copySummaryText()">Copy Summary</button>
-          </div>
-          <div id="summary-output" class="result-display">
-            Generating summary...
-          </div>
+        <div>
+          <span id="header-doc-indicator" class="doc-status-indicator" style="display: none;">
+            <span>●</span> <span id="header-doc-name">No file</span>
+          </span>
         </div>
-      </div>
-    </div>
+      </header>
 
-    <!-- =========================================================
-         TAB 3: Study Planner (Exam Schedule Generator)
-         ========================================================= -->
-    <div class="tab-panel" id="tab-planner">
-      <div class="tool-container">
-        <div class="card">
-          <div class="card-title">📅 Exam Study Planner</div>
-          <div class="card-desc">
-            Generate an organized day-by-day study schedule with spaced repetition, practice milestones, and break periods tailored for your exams.
-          </div>
-
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
-            <div class="form-group">
-              <label class="form-label">Subject / Exam Topic:</label>
-              <input type="text" id="plan-subject" class="form-input" placeholder="e.g. Physics Mechanics or Calculus Midterm">
-            </div>
-
-            <div class="form-group">
-              <label class="form-label">Days Left Until Exam:</label>
-              <select id="plan-days" class="form-select">
-                <option value="3 days">3 Days (Sprint)</option>
-                <option value="5 days">5 Days</option>
-                <option value="7 days" selected>7 Days (1 Week)</option>
-                <option value="14 days">14 Days (2 Weeks)</option>
-                <option value="30 days">30 Days (1 Month)</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label class="form-label">Available Study Time Per Day:</label>
-            <select id="plan-hours" class="form-select">
-              <option value="1 hour">1 hour / day</option>
-              <option value="2 hours" selected>2 hours / day</option>
-              <option value="3-4 hours">3 to 4 hours / day</option>
-              <option value="5+ hours">5+ hours / day (Intensive)</option>
-            </select>
-          </div>
-
-          <button id="planner-btn" class="btn-primary" onclick="generateStudyPlan()">
-            📅 Create My Study Schedule
-          </button>
-        </div>
-
-        <div id="planner-result-card" class="card" style="display: none;">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-            <div class="card-title" style="margin-bottom: 0;">🗓️ Your Personalized Schedule</div>
-            <button class="btn-secondary" onclick="savePlanLocally()">Save Schedule</button>
-          </div>
-          <div id="planner-output" class="result-display">
-            Generating schedule...
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- =========================================================
-         TAB 4: Progress Tracker & Quiz Scoring
-         ========================================================= -->
-    <div class="tab-panel" id="tab-progress">
-      <div class="tool-container">
+      <!-- =====================================================
+           PANEL 1: CHAT & DOUBTS
+           ===================================================== -->
+      <section class="view-panel active" id="panel-chat">
         
-        <!-- Stats Row -->
-        <div class="stats-grid">
-          <div class="stat-box">
-            <div class="stat-number" id="stat-doubts">0</div>
-            <div class="stat-label">Doubts Clarified</div>
-          </div>
-          <div class="stat-box">
-            <div class="stat-number" id="stat-docs">0</div>
-            <div class="stat-label">Notes/PDFs Studied</div>
-          </div>
-          <div class="stat-box">
-            <div class="stat-number" id="stat-quizzes">0</div>
-            <div class="stat-label">Quizzes Completed</div>
-          </div>
-          <div class="stat-box">
-            <div class="stat-number" id="stat-weak-count">0</div>
-            <div class="stat-label">Weak Areas Logged</div>
-          </div>
-        </div>
-
-        <!-- Weak Areas Section -->
-        <div class="card">
-          <div class="card-title">⚠️ Weak Areas & Concepts to Review</div>
-          <div class="card-desc">Keep track of challenging topics. Check them off once you master them.</div>
+        <!-- Messages Scroll Container -->
+        <div class="chat-scroll-area" id="chat-messages-container">
           
-          <div style="display: flex; gap: 8px; margin-bottom: 12px;">
-            <input type="text" id="new-weak-input" class="form-input" placeholder="e.g. Integration by parts, Photosynthesis light reactions..." style="flex: 1;">
-            <button class="btn-secondary" onclick="addWeakArea()">+ Add Topic</button>
+          <!-- Hero Welcome on New/Empty Chat -->
+          <div class="chat-hero" id="chat-hero">
+            <div class="hero-badge">🎓 AI Study Workspace</div>
+            <h1 class="hero-title">What would you like to master today?</h1>
+            <p class="hero-subtitle">
+              Get step-by-step doubt explanations, break down complex concepts, or drag and drop your study materials to analyze them instantly.
+            </p>
+
+            <!-- Big Drag-and-Drop Target -->
+            <div class="hero-dropzone" id="hero-dropzone"
+                 onclick="document.getElementById('file-input').click()"
+                 ondragover="handleDragOver(event)" 
+                 ondragleave="handleDragLeave(event)" 
+                 ondrop="handleDrop(event)">
+              <div class="hero-dropzone-icon">📥</div>
+              <div class="hero-dropzone-text" id="hero-dropzone-label">Drag & drop your textbook PDF or notes here</div>
+              <div class="hero-dropzone-sub">Click to browse • Supports PDF, TXT, MD, Python, JS</div>
+            </div>
+
+            <!-- Quick Action Suggestion Cards -->
+            <div class="hero-grid">
+              <div class="hero-card" onclick="sendQuickPrompt('Explain this concept step-by-step with an everyday analogy.')">
+                <div class="hero-card-icon">💡</div>
+                <div class="hero-card-text">"Explain this concept step-by-step with an analogy."</div>
+              </div>
+              <div class="hero-card" onclick="sendQuickPrompt('Break down the most important formulas and rules in my notes.')">
+                <div class="hero-card-icon">📐</div>
+                <div class="hero-card-text">"Break down the most important formulas & rules."</div>
+              </div>
+              <div class="hero-card" onclick="sendQuickPrompt('Give me a practice example to test if I understand this correctly.')">
+                <div class="hero-card-icon">✍️</div>
+                <div class="hero-card-text">"Give me a practice question to test my understanding."</div>
+              </div>
+            </div>
           </div>
 
-          <div id="weak-areas-list">
-            <div style="font-size: 0.82rem; color: #64748b; font-style: italic;">No weak areas logged yet. Add difficult topics above!</div>
+        </div>
+
+        <!-- Chat Input Bar (Pinned at Bottom) -->
+        <div class="input-container-outer">
+          
+          <!-- Quick Action Chips -->
+          <div class="quick-chips-row">
+            <button class="quick-chip" onclick="sendQuickPrompt('Explain step-by-step with simple examples')">💡 Step-by-Step</button>
+            <button class="quick-chip" onclick="sendQuickPrompt('What are the most common exam traps on this topic?')">⚠️ Exam Traps</button>
+            <button class="quick-chip" onclick="sendQuickPrompt('Summarize key points from my attached notes')">📋 Key Points</button>
+            <button class="quick-chip" onclick="sendQuickPrompt('Give me an intuitive real-world analogy')">🌐 Real-World Analogy</button>
+          </div>
+
+          <!-- Modern Input Box -->
+          <div class="input-box">
+            <input 
+              type="text" 
+              id="user-input" 
+              placeholder="Ask any question, clarify a doubt, or discuss your notes... (Press Enter)" 
+              onkeydown="if(event.key === 'Enter') sendMessage()"
+            >
+            <button id="send-btn" class="input-send-btn" onclick="sendMessage()" title="Send Message">
+              ↑
+            </button>
           </div>
         </div>
 
-        <!-- Practice Quiz Section to log scores -->
-        <div class="card">
-          <div class="card-title">🎯 Quick Practice Quiz & Score Test</div>
-          <div class="card-desc">Generate a 3-question MCQ quiz from your notes or topic to test your knowledge and record your score.</div>
+      </section>
 
-          <button id="quiz-btn" class="btn-primary" onclick="generatePracticeQuiz()">
-            ⚡ Generate 3-Question Practice Quiz
-          </button>
+      <!-- =====================================================
+           PANEL 2: SMART SUMMARY
+           ===================================================== -->
+      <section class="view-panel" id="panel-summary">
+        <div class="tool-page">
+          <div class="panel-card">
+            <div class="panel-card-title">📝 Smart Note Summarizer</div>
+            <div class="panel-card-desc">
+              Transform dense textbook chapters, lecture slides, or reading materials into high-yield summaries, core formulas, key definitions, and exam takeaways.
+            </div>
 
-          <div id="quiz-container" style="margin-top: 14px; display: none;"></div>
-          <div id="quiz-score-banner" style="margin-top: 10px; display: none; padding: 10px; border-radius: 8px; background: #1e3a8a; color: #bfdbfe; font-weight: 600; text-align: center;"></div>
+            <div id="summary-doc-notice" style="margin-bottom: 14px; font-size: 0.85rem; color: var(--text-muted);">
+              No document attached yet. You can attach a PDF via the sidebar, or paste notes text directly below.
+            </div>
+
+            <div class="input-group" style="margin-bottom: 16px;">
+              <label class="input-label">Or Paste Notes Text Directly (Optional):</label>
+              <textarea id="summary-custom-text" class="modern-textarea" rows="4" placeholder="Paste textbook excerpts, lecture transcripts, or notes here..."></textarea>
+            </div>
+
+            <button id="summary-btn" class="primary-action-btn" onclick="generateSmartSummary()">
+              <span>✨ Generate 1-Click Summary</span>
+            </button>
+          </div>
+
+          <div id="summary-result-card" class="panel-card" style="display: none;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+              <div class="panel-card-title" style="margin-bottom: 0;">📋 Generated Study Summary</div>
+              <button class="secondary-btn" onclick="copySummaryText()">Copy Summary</button>
+            </div>
+            <div id="summary-output" class="output-box">
+              Analyzing notes...
+            </div>
+          </div>
         </div>
+      </section>
 
-      </div>
-    </div>
+      <!-- =====================================================
+           PANEL 3: STUDY PLANNER
+           ===================================================== -->
+      <section class="view-panel" id="panel-planner">
+        <div class="tool-page">
+          <div class="panel-card">
+            <div class="panel-card-title">📅 Exam Study Planner</div>
+            <div class="panel-card-desc">
+              Build a personalized day-by-day revision schedule with spaced repetition, practice milestones, and break periods tailored for your upcoming tests.
+            </div>
+
+            <div class="form-grid">
+              <div class="input-group">
+                <label class="input-label">Subject / Exam Name:</label>
+                <input type="text" id="plan-subject" class="modern-input" placeholder="e.g. Physics Midterm, Calculus, Biology">
+              </div>
+
+              <div class="input-group">
+                <label class="input-label">Days Left Until Exam:</label>
+                <select id="plan-days" class="modern-select">
+                  <option value="3 days">3 Days (Sprint)</option>
+                  <option value="5 days">5 Days</option>
+                  <option value="7 days" selected>7 Days (1 Week)</option>
+                  <option value="14 days">14 Days (2 Weeks)</option>
+                  <option value="30 days">30 Days (1 Month)</option>
+                </select>
+              </div>
+
+              <div class="input-group">
+                <label class="input-label">Daily Available Study Time:</label>
+                <select id="plan-hours" class="modern-select">
+                  <option value="1 hour">1 hour / day</option>
+                  <option value="2 hours" selected>2 hours / day</option>
+                  <option value="3-4 hours">3 to 4 hours / day</option>
+                  <option value="5+ hours">5+ hours / day (Intensive)</option>
+                </select>
+              </div>
+            </div>
+
+            <button id="planner-btn" class="primary-action-btn" onclick="generateStudyPlan()">
+              <span>📅 Generate My Schedule</span>
+            </button>
+          </div>
+
+          <div id="planner-result-card" class="panel-card" style="display: none;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+              <div class="panel-card-title" style="margin-bottom: 0;">🗓️ Your Personalized Schedule</div>
+              <button class="secondary-btn" onclick="savePlanLocally()">Save Schedule</button>
+            </div>
+            <div id="planner-output" class="output-box">
+              Generating schedule...
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =====================================================
+           PANEL 4: PROGRESS TRACKER
+           ===================================================== -->
+      <section class="view-panel" id="panel-progress">
+        <div class="tool-page">
+          
+          <!-- Key Metrics -->
+          <div class="metrics-row">
+            <div class="metric-card">
+              <div class="metric-value" id="stat-doubts">0</div>
+              <div class="metric-title">Doubts Clarified</div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-value" id="stat-docs">0</div>
+              <div class="metric-title">Notes / PDFs Analyzed</div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-value" id="stat-quizzes">0</div>
+              <div class="metric-title">Quizzes Completed</div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-value" id="stat-weak-count">0</div>
+              <div class="metric-title">Weak Areas Logged</div>
+            </div>
+          </div>
+
+          <!-- Weak Areas Checklist -->
+          <div class="panel-card">
+            <div class="panel-card-title">⚠️ Weak Areas & Concepts to Review</div>
+            <div class="panel-card-desc">
+              Log topics you find challenging. Mark them off once you understand them to ensure zero surprises on exam day.
+            </div>
+
+            <div style="display: flex; gap: 10px; margin-bottom: 16px;">
+              <input type="text" id="new-weak-input" class="modern-input" placeholder="e.g. Integration by parts, Photosynthesis light reactions..." style="flex: 1;">
+              <button class="primary-action-btn" onclick="addWeakArea()">+ Add Topic</button>
+            </div>
+
+            <div id="weak-areas-list"></div>
+          </div>
+
+          <!-- Interactive MCQ Quiz Generator -->
+          <div class="panel-card">
+            <div class="panel-card-title">🎯 Instant Practice Quiz & Score Test</div>
+            <div class="panel-card-desc">
+              Test your mastery with a 3-question MCQ quiz automatically generated from your study material or current topic.
+            </div>
+
+            <button id="quiz-btn" class="primary-action-btn" onclick="generatePracticeQuiz()">
+              <span>⚡ Generate 3-Question Practice Quiz</span>
+            </button>
+
+            <div id="quiz-container" style="margin-top: 16px; display: none;"></div>
+            <div id="quiz-score-banner" style="margin-top: 12px; display: none; padding: 12px; border-radius: 9px; background: rgba(37,99,235,0.15); border: 1px solid #2563eb; color: #93c5fd; font-weight: 600; text-align: center;"></div>
+          </div>
+
+        </div>
+      </section>
+
+    </main>
 
   </div>
 
   <script>
     // =========================================================================
-    // Student Chatbot Project Script
-    // Clean, modern, with Doubt Clarification, Summary, Planner & Tracker
+    // AI Study Studio - Client Logic
     // =========================================================================
 
     // 1. API Configuration
@@ -843,7 +1187,7 @@
     let uploadedDocumentText = "";
     let uploadedDocumentName = "";
 
-    // 4. Progress Tracker Data (saved in browser localStorage)
+    // 4. Progress Tracker Data
     let progressData = JSON.parse(localStorage.getItem('student_tracker_data') || JSON.stringify({
       doubtsAsked: 0,
       docsAnalyzed: 0,
@@ -859,13 +1203,12 @@
       pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
     }
 
-    // On Load
+    // App Initialization
     window.addEventListener('DOMContentLoaded', () => {
       renderProgressStats();
       renderWeakAreas();
       setupGlobalDragAndDrop();
 
-      // Restore saved study plan if exists
       if (progressData.savedPlan) {
         document.getElementById('planner-result-card').style.display = 'block';
         document.getElementById('planner-output').innerHTML = marked.parse(progressData.savedPlan);
@@ -875,51 +1218,65 @@
     // =========================================================================
     // TAB SWITCHING
     // =========================================================================
-    function switchTab(tabId) {
-      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-      document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    const tabTitles = {
+      'chat': '💬 Chat & Doubts',
+      'summary': '📝 Smart Summary',
+      'planner': '📅 Study Planner',
+      'progress': '📊 Progress Tracker'
+    };
 
-      const targetPanel = document.getElementById(`tab-${tabId}`);
+    function switchTab(tabId) {
+      document.querySelectorAll('.view-panel').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+
+      const targetPanel = document.getElementById(`panel-${tabId}`);
       if (targetPanel) targetPanel.classList.add('active');
 
-      const activeBtn = Array.from(document.querySelectorAll('.nav-btn')).find(b => b.getAttribute('onclick')?.includes(tabId));
+      const activeBtn = Array.from(document.querySelectorAll('.nav-item')).find(b => b.getAttribute('onclick')?.includes(tabId));
       if (activeBtn) activeBtn.classList.add('active');
+
+      const headerTitle = document.getElementById('current-view-title');
+      if (headerTitle) headerTitle.innerHTML = tabTitles[tabId] || 'Workspace';
     }
 
     // =========================================================================
-    // FILE HANDLING & DRAG AND DROP
+    // FILE UPLOAD & DRAG AND DROP
     // =========================================================================
     function setupGlobalDragAndDrop() {
       ['dragenter', 'dragover'].forEach(name => {
         window.addEventListener(name, (e) => {
           e.preventDefault();
-          const dz = document.getElementById('drop-zone');
-          if (dz) dz.classList.add('dragover');
+          const dz1 = document.getElementById('sidebar-dropzone');
+          const dz2 = document.getElementById('hero-dropzone');
+          if (dz1) dz1.classList.add('dragover');
+          if (dz2) dz2.classList.add('dragover');
         });
       });
 
       ['dragleave', 'drop'].forEach(name => {
         window.addEventListener(name, (e) => {
           e.preventDefault();
-          const dz = document.getElementById('drop-zone');
-          if (dz) dz.classList.remove('dragover');
+          const dz1 = document.getElementById('sidebar-dropzone');
+          const dz2 = document.getElementById('hero-dropzone');
+          if (dz1) dz1.classList.remove('dragover');
+          if (dz2) dz2.classList.remove('dragover');
         });
       });
     }
 
     function handleDragOver(e) {
       e.preventDefault();
-      document.getElementById('drop-zone').classList.add('dragover');
+      e.currentTarget.classList.add('dragover');
     }
 
     function handleDragLeave(e) {
       e.preventDefault();
-      document.getElementById('drop-zone').classList.remove('dragover');
+      e.currentTarget.classList.remove('dragover');
     }
 
     async function handleDrop(e) {
       e.preventDefault();
-      document.getElementById('drop-zone').classList.remove('dragover');
+      e.currentTarget.classList.remove('dragover');
       const files = e.dataTransfer.files;
       if (files && files.length > 0) {
         await processUploadedFile(files[0]);
@@ -934,17 +1291,18 @@
     }
 
     async function processUploadedFile(file) {
-      const fileStatus = document.getElementById('file-status');
-      const removeBtn = document.getElementById('remove-file-btn');
-      const dropZoneTitle = document.getElementById('drop-zone-title');
-      const activeNotesIndicator = document.getElementById('active-notes-indicator');
-      const summaryFileNotice = document.getElementById('summary-file-notice');
+      const fileBox = document.getElementById('attached-file-box');
+      const fileNameSpan = document.getElementById('attached-file-name');
+      const heroLabel = document.getElementById('hero-dropzone-label');
+      const headerIndicator = document.getElementById('header-doc-indicator');
+      const headerDocName = document.getElementById('header-doc-name');
+      const summaryNotice = document.getElementById('summary-doc-notice');
 
-      fileStatus.textContent = `Reading ${file.name}...`;
-      fileStatus.style.display = "inline";
+      fileNameSpan.textContent = `Reading ${file.name}...`;
+      fileBox.style.display = 'flex';
 
       try {
-        if (file.type === "application/pdf" || file.name.endsWith(".pdf")) {
+        if (file.type === 'application/pdf' || file.name.endsWith('.pdf')) {
           const arrayBuffer = await file.arrayBuffer();
           const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
           let fullText = "";
@@ -959,24 +1317,27 @@
         }
 
         uploadedDocumentName = file.name;
-        fileStatus.textContent = `📎 ${file.name}`;
-        removeBtn.style.display = "inline";
-        activeNotesIndicator.textContent = `Attached: ${file.name}`;
-        activeNotesIndicator.style.color = "#34d399";
-        
-        if (dropZoneTitle) {
-          dropZoneTitle.textContent = `✓ Attached: ${file.name}`;
-        }
-        if (summaryFileNotice) {
-          summaryFileNotice.innerHTML = `✓ Ready to summarize: <b style="color:#34d399;">${file.name}</b>`;
+        fileNameSpan.textContent = file.name;
+        fileBox.style.display = 'flex';
+
+        if (headerIndicator && headerDocName) {
+          headerDocName.textContent = file.name;
+          headerIndicator.style.display = 'inline-flex';
         }
 
-        // Track stats
+        if (heroLabel) {
+          heroLabel.textContent = `✓ Attached: ${file.name}`;
+        }
+
+        if (summaryNotice) {
+          summaryNotice.innerHTML = `✓ Ready to summarize: <b style="color:#34d399;">${file.name}</b>`;
+        }
+
         progressData.docsAnalyzed++;
         saveProgress();
 
       } catch (err) {
-        alert("Could not read file: " + err.message);
+        alert("Could not process file: " + err.message);
         removeFile();
       }
     }
@@ -985,20 +1346,20 @@
       uploadedDocumentText = "";
       uploadedDocumentName = "";
       document.getElementById('file-input').value = "";
-      document.getElementById('file-status').style.display = "none";
-      document.getElementById('remove-file-btn').style.display = "none";
-      document.getElementById('active-notes-indicator').textContent = "No document loaded";
-      document.getElementById('active-notes-indicator').style.color = "#64748b";
+      document.getElementById('attached-file-box').style.display = "none";
+      
+      const headerIndicator = document.getElementById('header-doc-indicator');
+      if (headerIndicator) headerIndicator.style.display = "none";
 
-      const dropZoneTitle = document.getElementById('drop-zone-title');
-      if (dropZoneTitle) dropZoneTitle.textContent = "Drag & drop your PDF or notes here";
+      const heroLabel = document.getElementById('hero-dropzone-label');
+      if (heroLabel) heroLabel.textContent = "Drag & drop your textbook PDF or notes here";
 
-      const summaryFileNotice = document.getElementById('summary-file-notice');
-      if (summaryFileNotice) summaryFileNotice.textContent = "No document attached yet. You can attach a PDF above or paste notes below.";
+      const summaryNotice = document.getElementById('summary-doc-notice');
+      if (summaryNotice) summaryNotice.textContent = "No document attached yet. You can attach a PDF via the sidebar, or paste notes text directly below.";
     }
 
     // =========================================================================
-    // FEATURE 1: CHAT & DOUBTS (Step-by-step Doubt Clarification)
+    // CHAT & DOUBTS (Step-by-Step Doubt Clearing)
     // =========================================================================
     function sendQuickPrompt(promptText) {
       document.getElementById('user-input').value = promptText;
@@ -1009,11 +1370,10 @@
       const input = document.getElementById('user-input');
       const text = input.value.trim();
       const sendBtn = document.getElementById('send-btn');
-      const chatWindow = document.getElementById('chat-window');
+      const container = document.getElementById('chat-messages-container');
 
       if (!text) return;
 
-      // Ensure API Key exists
       if (!API_KEY) {
         const userKey = prompt("Please enter your Google Gemini API Key to chat:");
         if (userKey && userKey.trim()) {
@@ -1024,32 +1384,34 @@
         }
       }
 
-      // Hide welcome banner once chatting begins
-      const welcome = document.getElementById('welcome-box');
-      if (welcome) welcome.style.display = 'none';
+      // Hide hero on first message
+      const hero = document.getElementById('chat-hero');
+      if (hero) hero.style.display = 'none';
 
-      appendMessage("You", text, "user");
+      appendMessageRow("You", text, "user");
       input.value = "";
       input.focus();
       sendBtn.disabled = true;
 
-      // Track doubts asked
       progressData.doubtsAsked++;
       saveProgress();
 
       // Show typing indicator
       const typingId = "typing-" + Date.now();
-      const typingDiv = document.createElement('div');
-      typingDiv.className = "message bot";
-      typingDiv.id = typingId;
-      typingDiv.innerHTML = `
-        <span class="sender-name">Gemini Bot</span>
-        <div class="bubble typing">Explaining step-by-step...</div>
+      const typingRow = document.createElement('div');
+      typingRow.className = "message-row bot";
+      typingRow.id = typingId;
+      typingRow.innerHTML = `
+        <div class="avatar bot">✨</div>
+        <div class="bubble-wrapper">
+          <div class="message-bubble">
+            <span class="typing-pill">Analyzing and explaining step-by-step...</span>
+          </div>
+        </div>
       `;
-      chatWindow.appendChild(typingDiv);
-      chatWindow.scrollTop = chatWindow.scrollHeight;
+      container.appendChild(typingRow);
+      container.scrollTop = container.scrollHeight;
 
-      // Prompt injection with attached notes
       let promptToSend = text;
       if (uploadedDocumentText) {
         promptToSend = `[Attached Notes / Study Material: ${uploadedDocumentName}]\n${uploadedDocumentText.slice(0, 40000)}\n\n[Student Doubt/Question]: ${text}`;
@@ -1067,7 +1429,7 @@
           body: JSON.stringify({
             contents: chatHistory,
             systemInstruction: {
-              parts: [{ text: "You are an encouraging, patient student study assistant specializing in step-by-step doubt clearing. When answering doubts: 1. Give a crystal clear direct answer. 2. Break down the concept into step-by-step logic. 3. Use simple real-world analogies. 4. Highlight key formulas or terms." }]
+              parts: [{ text: "You are an expert AI study assistant specializing in step-by-step doubt clearing. When explaining: 1. State the direct answer clearly. 2. Break down the concept into step-by-step logic. 3. Use an intuitive real-world analogy. 4. Explicitly highlight key formulas or terms. Format with clean markdown." }]
             }
           })
         });
@@ -1080,9 +1442,9 @@
         }
 
         const data = await response.json();
-        const replyText = data.candidates?.[0]?.content?.parts?.[0]?.text || "I couldn't process that question. Please try again.";
+        const replyText = data.candidates?.[0]?.content?.parts?.[0]?.text || "I could not generate a response.";
 
-        appendMessage("Gemini Bot", replyText, "bot");
+        appendMessageRow("AI Assistant", replyText, "bot");
 
         chatHistory.push({
           role: "model",
@@ -1091,38 +1453,46 @@
 
       } catch (err) {
         document.getElementById(typingId)?.remove();
-        appendMessage("Gemini Bot", "⚠️ Error: " + err.message, "bot");
+        appendMessageRow("AI Assistant", "⚠️ Error: " + err.message, "bot");
       } finally {
         sendBtn.disabled = false;
-        chatWindow.scrollTop = chatWindow.scrollHeight;
+        container.scrollTop = container.scrollHeight;
       }
     }
 
-    function appendMessage(sender, text, type) {
-      const chatWindow = document.getElementById('chat-window');
-      const msgDiv = document.createElement('div');
-      msgDiv.className = `message ${type}`;
+    function appendMessageRow(sender, text, type) {
+      const container = document.getElementById('chat-messages-container');
+      const row = document.createElement('div');
+      row.className = `message-row ${type}`;
+
       const formatted = (type === "bot") ? marked.parse(text) : escapeHtml(text);
-      msgDiv.innerHTML = `
-        <span class="sender-name">${sender}</span>
-        <div class="bubble">${formatted}</div>
+
+      row.innerHTML = `
+        ${type === 'bot' ? '<div class="avatar bot">✨</div>' : ''}
+        <div class="bubble-wrapper">
+          <div class="message-bubble">${formatted}</div>
+        </div>
+        ${type === 'user' ? '<div class="avatar user">👤</div>' : ''}
       `;
-      chatWindow.appendChild(msgDiv);
-      chatWindow.scrollTop = chatWindow.scrollHeight;
+
+      container.appendChild(row);
+      container.scrollTop = container.scrollHeight;
     }
 
     function clearChat() {
       chatHistory = [];
-      const chatWindow = document.getElementById('chat-window');
-      chatWindow.innerHTML = `
-        <div class="welcome-box" id="welcome-box">
-          🧹 <b>Chat cleared!</b> Feel free to ask a new question or drag in a new document.
+      const container = document.getElementById('chat-messages-container');
+      container.innerHTML = `
+        <div class="chat-hero" id="chat-hero">
+          <div class="hero-badge">🎓 AI Study Workspace</div>
+          <h1 class="hero-title">What would you like to master today?</h1>
+          <p class="hero-subtitle">Ask questions, clarify doubts step-by-step, or drag in notes above to get started.</p>
         </div>
       `;
     }
 
     // =========================================================================
-    // FEATURE 2: SMART SUMMARIZATION (1-Click Key Takeaways & Formulas)
+    // SMART SUMMARY
     // =========================================================================
     async function generateSmartSummary() {
       const customText = document.getElementById('summary-custom-text').value.trim();
@@ -1138,7 +1508,7 @@
       const outputDiv = document.getElementById('summary-output');
 
       summaryBtn.disabled = true;
-      summaryBtn.textContent = "Summarizing Notes...";
+      summaryBtn.textContent = "Analyzing & Summarizing...";
       resultCard.style.display = "block";
       outputDiv.innerHTML = "<em>Analyzing material and generating high-yield summary...</em>";
 
@@ -1182,7 +1552,7 @@ Structure your output cleanly with markdown using these exact sections:
     }
 
     // =========================================================================
-    // FEATURE 3: STUDY PLANNER (Custom Exam Schedule)
+    // STUDY PLANNER
     // =========================================================================
     async function generateStudyPlan() {
       const subject = document.getElementById('plan-subject').value.trim() || (uploadedDocumentName || "My Subject");
@@ -1194,9 +1564,9 @@ Structure your output cleanly with markdown using these exact sections:
       const outputDiv = document.getElementById('planner-output');
 
       btn.disabled = true;
-      btn.textContent = "Creating Schedule...";
+      btn.textContent = "Building Schedule...";
       resultCard.style.display = "block";
-      outputDiv.innerHTML = "<em>Generating personalized daily study schedule...</em>";
+      outputDiv.innerHTML = "<em>Creating personalized day-by-day exam schedule...</em>";
 
       const prompt = `Create a realistic, motivating daily Study Plan for a student preparing for:
 Subject: ${subject}
@@ -1204,7 +1574,7 @@ Time until exam: ${days}
 Available study time: ${hours}
 ${uploadedDocumentText ? `Reference Material Topics: ${uploadedDocumentText.slice(0, 10000)}` : ''}
 
-Format with markdown:
+Format with clean markdown:
 1. 🎯 **Exam Goal & Strategy**
 2. 🗓️ **Day-by-Day Schedule** (Break down each day: Topic, Practice Tasks, and Rest Intervals)
 3. 🔁 **Spaced Repetition Review Milestones**
@@ -1229,7 +1599,7 @@ Format with markdown:
         outputDiv.innerHTML = `<span style="color:#f87171;">Error creating plan: ${err.message}</span>`;
       } finally {
         btn.disabled = false;
-        btn.textContent = "📅 Create My Study Schedule";
+        btn.textContent = "📅 Generate My Schedule";
       }
     }
 
@@ -1240,7 +1610,7 @@ Format with markdown:
     }
 
     // =========================================================================
-    // FEATURE 4: PROGRESS TRACKER & PRACTICE QUIZ
+    // PROGRESS TRACKER & QUIZ
     // =========================================================================
     function renderProgressStats() {
       document.getElementById('stat-doubts').textContent = progressData.doubtsAsked || 0;
@@ -1252,17 +1622,17 @@ Format with markdown:
     function renderWeakAreas() {
       const list = document.getElementById('weak-areas-list');
       if (!progressData.weakAreas || progressData.weakAreas.length === 0) {
-        list.innerHTML = `<div style="font-size: 0.82rem; color: #64748b; font-style: italic;">No weak areas logged yet. Add difficult topics above!</div>`;
+        list.innerHTML = `<div style="font-size: 0.85rem; color: var(--text-dim); font-style: italic;">No weak areas logged yet. Add challenging topics above!</div>`;
         return;
       }
 
-      list.innerHTML = progressData.weakAreas.map((w, i) => `
-        <div class="weak-item ${w.mastered ? 'mastered' : ''}">
-          <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+      list.innerHTML = progressData.weakAreas.map(w => `
+        <div class="weak-item-row ${w.mastered ? 'mastered' : ''}">
+          <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
             <input type="checkbox" ${w.mastered ? 'checked' : ''} onchange="toggleWeakArea('${w.id}')">
             <span>${escapeHtml(w.text)}</span>
           </label>
-          <button onclick="deleteWeakArea('${w.id}')" style="background:none; border:none; color:#f87171; cursor:pointer; font-size:0.75rem;">Delete</button>
+          <button onclick="deleteWeakArea('${w.id}')" style="background:none; border:none; color:var(--accent-red); cursor:pointer; font-size:0.8rem;">Delete</button>
         </div>
       `).join('');
     }
@@ -1299,19 +1669,18 @@ Format with markdown:
       renderProgressStats();
     }
 
-    // Interactive 3-Question MCQ Quiz to test knowledge
     async function generatePracticeQuiz() {
       const btn = document.getElementById('quiz-btn');
       const container = document.getElementById('quiz-container');
       const banner = document.getElementById('quiz-score-banner');
 
-      const sourceText = uploadedDocumentText || "General Computer Science and Study Skills";
+      const sourceText = uploadedDocumentText || "General Science and Computer Science core concepts";
 
       btn.disabled = true;
-      btn.textContent = "Building Quiz...";
+      btn.textContent = "Generating Quiz Questions...";
       container.style.display = "block";
       banner.style.display = "none";
-      container.innerHTML = "<em>Generating 3 multiple choice questions based on your notes...</em>";
+      container.innerHTML = "<em>Analyzing material and generating 3 practice MCQs...</em>";
 
       const prompt = `Create a 3-question Multiple Choice Quiz (MCQ) for students based on:
 ${sourceText.slice(0, 15000)}
@@ -1343,7 +1712,7 @@ Return ONLY valid JSON in this exact structure without markdown backticks:
         renderQuizQuestions(questions);
 
       } catch (err) {
-        container.innerHTML = `<span style="color:#f87171;">Could not generate quiz: ${err.message}. Try asking a question in Chat.</span>`;
+        container.innerHTML = `<span style="color:#f87171;">Could not generate quiz: ${err.message}.</span>`;
       } finally {
         btn.disabled = false;
         btn.textContent = "⚡ Generate 3-Question Practice Quiz";
@@ -1357,16 +1726,16 @@ Return ONLY valid JSON in this exact structure without markdown backticks:
       window.answeredCount = 0;
 
       container.innerHTML = questions.map((q, qIndex) => `
-        <div class="quiz-question" id="quiz-q-${qIndex}">
-          <div class="quiz-q-title">Question ${qIndex + 1}: ${escapeHtml(q.question)}</div>
-          <div class="quiz-options">
+        <div class="mcq-card" id="quiz-q-${qIndex}">
+          <div class="mcq-q">${qIndex + 1}. ${escapeHtml(q.question)}</div>
+          <div class="mcq-options">
             ${q.options.map((opt, optIndex) => `
-              <button class="quiz-opt" onclick="selectQuizOption(${qIndex}, ${optIndex}, this)">
+              <button class="mcq-opt" onclick="selectQuizOption(${qIndex}, ${optIndex}, this)">
                 ${String.fromCharCode(65 + optIndex)}) ${escapeHtml(opt)}
               </button>
             `).join('')}
           </div>
-          <div id="quiz-exp-${qIndex}" style="margin-top:8px; font-size:0.8rem; color:#93c5fd; display:none;"></div>
+          <div id="quiz-exp-${qIndex}" style="margin-top:8px; font-size:0.83rem; color:#93c5fd; display:none;"></div>
         </div>
       `).join('');
     }
@@ -1377,8 +1746,7 @@ Return ONLY valid JSON in this exact structure without markdown backticks:
       const expDiv = document.getElementById(`quiz-exp-${qIndex}`);
       const banner = document.getElementById('quiz-score-banner');
 
-      // Disable all options for this question
-      const allBtns = parent.querySelectorAll('.quiz-opt');
+      const allBtns = parent.querySelectorAll('.mcq-opt');
       allBtns.forEach(b => b.disabled = true);
 
       if (optIndex === q.answerIndex) {
@@ -1386,7 +1754,6 @@ Return ONLY valid JSON in this exact structure without markdown backticks:
         window.quizScore++;
       } else {
         btnElement.classList.add('incorrect');
-        // highlight correct answer
         allBtns[q.answerIndex].classList.add('correct');
       }
 
